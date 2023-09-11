@@ -50,6 +50,7 @@ def roll_homeland(race_result):
     match race_result:
         case 'Human' | 'Dwarf':
             char_home = str(random.choice(human_homes))
+            char_home = str(random.choices(list(human_homes.keys()), weights=human_homes.values(), k=1))
             return char_home
 
         case 'Elf' | 'Halfling' | 'Gnome':
@@ -150,7 +151,7 @@ def roll_life_events(race_result, char_age):
 
     event_category = str(random.choice(life_event))
     event_category_id = life_event.index(event_category)
-
+    print(f'You rolled: {event_category} with ID {event_category_id}')
     if event_category_id == 0: # Fortune or Misfortune
         print('Fortune or Misfortune...')
 
@@ -282,6 +283,8 @@ def char_creation():
         retry = ask_reroll(question_text, char_life_events) 
     category = 'life events'
     store_data(category, char_life_events) 
+
+
 
 
 
