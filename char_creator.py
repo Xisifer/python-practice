@@ -5,6 +5,31 @@ from math import floor
 from char_creation_menus import *
 
 
+# def bare_text(string):
+#     print(f'bare string is {string}')
+#     strip1 = string.strip('[]') # remove [dictionary brackets]
+#     strip2 = strip1.strip('\"') # remove "double quotes"
+#     stripped_text = strip2.strip("\'") # remove 'single quotes'
+#     return stripped_text
+
+def roll(dictionary):
+    
+    rolled = random.choices(list(dictionary.keys()), weights=dictionary.values(), k=1)
+    rolled_string = rolled[0]
+    print(f'rolled_string is: {rolled_string}')
+
+    dict_items = list(dictionary.items())
+    rolled_index = [id for id, key in enumerate(dict_items) if key[0] == rolled_string]
+    print(f'rolled_index[0] is: {rolled_index[0]}')
+
+    # pack both string and index into a tuple for export
+
+
+
+    return (rolled_string, rolled_index[0])
+
+
+
 def name_input():
     char_name = input("Do you want to roll dice? Y/N ")
     name_stripped = str(char_name.strip())
@@ -42,24 +67,28 @@ def store_data(category, selection):
 
 def roll_race():
 
-    race_result = str(random.choice(races))
+    race_result = roll(races)
     return race_result
 
 def roll_homeland(race_result):
    
     match race_result:
         case 'Human' | 'Dwarf':
-            char_home = str(random.choice(human_homes))
-            char_home = str(random.choices(list(human_homes.keys()), weights=human_homes.values(), k=1))
+            char_home = roll(human_homes)
+            print(f'returning:  {char_home}')
             return char_home
 
         case 'Elf' | 'Halfling' | 'Gnome':
-            char_home = str(random.choice(fey_homes))
+            char_home = roll(fey_homes)
+            print(f'returning:  {char_home}')
             return char_home
         
         case 'Dragonborn' | 'Orc' | 'Goblin' | 'Kobold' | 'Gnoll':
-            char_home = str(random.choice(savage_homes))
+            char_home = roll(savage_homes)
+            print(f'returning:  {char_home}')
             return char_home
+        case _:
+            print('ERROR: Race not valid!')
 
 
 
@@ -69,33 +98,32 @@ def roll_origin(race_result, char_home):
     match race_result:
         case 'Human' | 'Dwarf':
 
-            char_origin = str(random.choice(human_origins))
+            char_origin = roll(human_origins)
             print(char_origin)
-            origin_flavor = str(random.choice(urban_flavor))
+            origin_flavor = roll(urban_flavor)
             print(origin_flavor)
             return char_origin
 
         case 'Elf' | 'Halfling' | 'Gnome':
 
-            char_origin = str(random.choice(fey_origins))
+            char_origin = roll(fey_origins)
             print(char_origin)
-            origin_flavor = str(random.choice(wild_flavor))
+            origin_flavor = roll(wild_flavor)
             print(origin_flavor)
             return char_origin
         
         case 'Dragonborn' | 'Orc' | 'Goblin' | 'Kobold' | 'Gnoll':
 
-            char_origin = str(random.choice(savage_origins))
+            char_origin = roll(savage_origins)
             print(char_origin)
-            origin_flavor = str(random.choice(savage_flavor))
-            print(origin_flavor)
+            origin_flavor = roll(savage_flavor)
             return char_origin
 
 def roll_family_fate(race_result):
 
 
-    char_family_status = str(random.choice(family_status))
-    char_family_status_id = family_status.index(char_family_status)
+    char_family_status = roll(family_status)
+    char_family_status_id = char_family_status[1]
     if char_family_status_id == 0:
         print('Your family is alive and well.')
         return char_family_status
@@ -105,40 +133,40 @@ def roll_family_fate(race_result):
         match race_result:
             case 'Human' | 'Dwarf':
 
-                char_family_fate = str(random.choice(family_fate_human))
+                char_family_fate = roll(family_fate_human)
                 print(char_family_fate)
 
                 return char_family_fate
 
             case 'Elf' | 'Halfling' | 'Gnome':
 
-                char_family_fate = str(random.choice(family_fate_fey))
+                char_family_fate = roll(family_fate_fey)
                 print(char_family_fate)
                 return char_family_fate
             
             case 'Dragonborn' | 'Orc' | 'Goblin' | 'Kobold' | 'Gnoll':
 
-                char_family_fate = str(random.choice(family_fate_savage))
+                char_family_fate = roll(family_fate_savage)
                 print(char_family_fate)
                 return char_family_fate
 
 def roll_parents():
 
-    char_parents_status = str(random.choice(parents_status))
-    char_parents_status_id = parents_status.index(char_parents_status)
+    char_parents_status = roll(parents_status)
+    char_parents_status_id = char_parents_status[1]
 
     if char_parents_status_id == 0:
         return char_parents_status
     else:
-        char_parents_fate = str(random.choice(parents_fate))
+        char_parents_fate = roll(parents_fate)
         print(char_parents_fate)
-        char_parents_fate_id = parents_fate.index(char_parents_fate)
+        char_parents_fate_id = char_parents_fate[1]
         if char_parents_fate_id == 0:
-            char_father_fate = str(random.choice(father_fate))
+            char_father_fate = roll(father_fate)
             print(char_father_fate)
             return char_father_fate
         else:
-            char_mother_fate = str(random.choice(mother_fate))
+            char_mother_fate = roll(mother_fate)
             print(char_mother_fate)
             return char_mother_fate
 
@@ -149,8 +177,8 @@ def roll_life_events(race_result, char_age):
 
 
 
-    event_category = str(random.choice(life_event))
-    event_category_id = life_event.index(event_category)
+    event_category = roll(life_event)
+    event_category_id = event_category[1]
     print(f'You rolled: {event_category} with ID {event_category_id}')
     if event_category_id == 0: # Fortune or Misfortune
         print('Fortune or Misfortune...')
@@ -187,7 +215,8 @@ def char_creation():
     retry = True
     while retry :
         question_text = 'Your character is a...'
-        race_result = roll_race()
+        race_result_tuple = roll_race()
+        race_result = race_result_tuple[0]
         retry = ask_reroll(question_text, race_result) 
     category = 'race'
     store_data(category, race_result)
@@ -196,7 +225,8 @@ def char_creation():
     retry = True
     while retry :
         question_text = 'Your character is from...'
-        char_home = roll_homeland(race_result)
+        char_home_tuple = roll_homeland(race_result)
+        char_home = char_home_tuple[0]
         retry = ask_reroll(question_text, char_home) 
     category = 'home'
     Character.origin = char_home
@@ -208,7 +238,8 @@ def char_creation():
     retry = True
     while retry :
         question_text = 'Your childhood: '
-        char_origin = roll_origin(race_result, char_home)
+        char_origin_tuple = roll_origin(race_result, char_home)
+        char_origin = char_origin_tuple[0]
         retry = ask_reroll(question_text, char_origin) 
     category = 'origin'
     store_data(category, char_origin) 
@@ -230,7 +261,8 @@ def char_creation():
     retry = True
     while retry :
         question_text = 'Your family...'
-        char_family = roll_family_fate(race_result)
+        char_family_tuple = roll_family_fate(race_result)
+        char_family = char_family_tuple[0]
         retry = ask_reroll(question_text, char_family) 
     category = 'family'
     store_data(category, char_family) 
@@ -239,7 +271,8 @@ def char_creation():
     retry = True
     while retry :
         question_text = 'Your parents...'
-        char_parents = roll_parents()
+        char_parents_tuple = roll_parents()
+        char_parents = char_parents_tuple[0]
         retry = ask_reroll(question_text, char_parents) 
     category = 'parents'
     store_data(category, char_parents) 

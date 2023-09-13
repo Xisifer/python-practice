@@ -160,7 +160,7 @@ wild_animal = {
     'Wild Dog':50,
     'Wolf':50
 }
-wild_animal_result = str(random.choice(wild_animal))
+wild_animal_result = str(random.choices(list(wild_animal.keys()), weights=wild_animal.values(), k=1))
 fortunes = {
     f'Fortune 1: Gain {gold} gold pieces':10,
     'Fortune 2':10,
@@ -188,9 +188,6 @@ law_hunters = random.choices(list(law_hunters_choices.keys()), weights=law_hunte
 betrayal_choices = {'a family member':20, 'a friend':30, 'a loved one':10, 'an ally':40}
 betrayer = random.choices(list(betrayal_choices.keys()), weights=betrayal_choices.values(), k=1)
 months = d10 * 5
-
-
-
 accident_choices = {'A spell went off in your face. You are Disfigured.':30, 
     f'You were attacked by a wolf pack and it took {months} to heal.':40,
     f'You fell off a roof and suffered amnesia. You forgot {d10} months of your life.':30}
