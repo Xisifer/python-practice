@@ -16,17 +16,18 @@ def roll(dictionary):
     
     rolled = random.choices(list(dictionary.keys()), weights=dictionary.values(), k=1)
     rolled_string = rolled[0]
-    print(f'rolled_string is: {rolled_string}')
 
     dict_items = list(dictionary.items())
     rolled_index = [id for id, key in enumerate(dict_items) if key[0] == rolled_string]
-    print(f'rolled_index[0] is: {rolled_index[0]}')
 
     # pack both string and index into a tuple for export
-
-
-
     return (rolled_string, rolled_index[0])
+
+def flip():
+    if random.randint(0,1):
+        return 0
+    else:
+        return 1
 
 
 
@@ -123,8 +124,8 @@ def roll_family_fate(race_result):
 
 
     char_family_status = roll(family_status)
-    char_family_status_id = char_family_status[1]
-    if char_family_status_id == 0:
+    char_family_status_index = char_family_status[1]
+    if char_family_status_index == 0:
         print('Your family is alive and well.')
         return char_family_status
     else:
@@ -134,34 +135,30 @@ def roll_family_fate(race_result):
             case 'Human' | 'Dwarf':
 
                 char_family_fate = roll(family_fate_human)
-                print(char_family_fate)
-
                 return char_family_fate
 
             case 'Elf' | 'Halfling' | 'Gnome':
 
                 char_family_fate = roll(family_fate_fey)
-                print(char_family_fate)
                 return char_family_fate
             
             case 'Dragonborn' | 'Orc' | 'Goblin' | 'Kobold' | 'Gnoll':
 
                 char_family_fate = roll(family_fate_savage)
-                print(char_family_fate)
                 return char_family_fate
 
 def roll_parents():
 
     char_parents_status = roll(parents_status)
-    char_parents_status_id = char_parents_status[1]
+    char_parents_status_index = char_parents_status[1]
 
-    if char_parents_status_id == 0:
+    if char_parents_status_index == 0:
         return char_parents_status
     else:
         char_parents_fate = roll(parents_fate)
         print(char_parents_fate)
-        char_parents_fate_id = char_parents_fate[1]
-        if char_parents_fate_id == 0:
+        char_parents_fate_index = char_parents_fate[1]
+        if char_parents_fate_index == 0:
             char_father_fate = roll(father_fate)
             print(char_father_fate)
             return char_father_fate
@@ -173,22 +170,53 @@ def roll_parents():
 # def roll_family_events():
     
 
-def roll_life_events(race_result, char_age):
+def roll_life_events(race_result, char_age, life_milestones):
+    life_events_num = len(life_milestones)
+
+    def roll_event(life_age): 
+        print(f'At age {life_age}...')
+        event_category = roll(life_event)
+        event_category_index = event_category[1]
+        # print(f'You rolled: {event_category} with ID {event_category_index}')
+        if event_category_index == 0: # Fortune or Misfortune
+            print('Fortune or Misfortune...')
+            # even_odd = flip()
+
+            retry = True
+            while retry :
+                question_text = 'Fortune or Misfortune? '
+                even_odd = roll(fortune_misfortune)
+                even_odd_result = even_odd[0]
+                even_odd_index = even_odd[1]
+                retry = ask_reroll(question_text, even_odd_result) 
 
 
+            if even_odd_index == 0: #Fortune
+                retry = True
+                while retry :
+                    question_text = 'You had a Fortunate event: '
+                    fortune_tuple = roll(fortunes)
+                    fortune_result = fortune_tuple[0]
+                    fortune_index = fortune_tuple[1]
+                    retry = ask_reroll(question_text, fortune_result) 
+            else: # Misfortune
+                retry = True
+                while retry :
+                    question_text = 'You sufered Misfortune: '
+                    misfortune_tuple = roll(misfortunes)
+                    misfortune_result = misfortune_tuple[0]
+                    misfortune_index = misfortune_tuple[1]
+                    retry = ask_reroll(question_text, misfortune_result) 
 
-    event_category = roll(life_event)
-    event_category_id = event_category[1]
-    print(f'You rolled: {event_category} with ID {event_category_id}')
-    if event_category_id == 0: # Fortune or Misfortune
-        print('Fortune or Misfortune...')
 
-        print(f'1d10 x 100 gold = {gold}')
+        elif event_category_index == 1: # Allies and Enemies
+            print('Allies and Enemies')
+        else: #Romance
+            print('Romance')
+    print(f'You have had {life_events_num} events.')
 
-    elif event_category_id == 1: # Allies and Enemies
-        print('Allies and Enemies')
-    else: #Romance
-        print('Romance')
+    for life_age in life_milestones:
+        roll_event(life_age)
 
 
 
@@ -296,7 +324,7 @@ def char_creation():
 
     age = 0
     life_milestones = []
-    for age in range(0, char_age, 5):
+    for age in range(5, char_age, 5):
         life_milestones.append(age)
 
     life_events_num = len(life_milestones)
@@ -309,11 +337,11 @@ def char_creation():
 
     # question 7
 
-    retry = True
-    while retry :
-        question_text = 'Major Life Events'
-        char_life_events = roll_life_events(race_result, char_age)
-        retry = ask_reroll(question_text, char_life_events) 
+    # retry = True
+    # while retry :
+    question_text = 'Major Life Events'
+    char_life_events = roll_life_events(race_result, char_age, life_milestones)
+    # retry = ask_reroll(question_text, char_life_events) 
     category = 'life events'
     store_data(category, char_life_events) 
 

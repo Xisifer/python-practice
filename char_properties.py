@@ -26,20 +26,20 @@ class Character:
 
 
 
-d = {
- 'a': [1, 3, 2],
- 'b': [6],
- 'c': [0, 0]
-}
+# d = {
+#  'a': [1, 3, 2],
+#  'b': [6],
+#  'c': [0, 0]
+# }
 
-roll = random.choice([k for k in d for x in d[k]])
+# roll = random.choice([k for k in d for x in d[k]])
 
-print(roll)
+# print(roll)
 
-dict = {'deer':50,
-        'raccoon':40,
-        'UNICORN':10}
+# dict = {'deer':50,
+#         'raccoon':40,
+#         'UNICORN':10}
 
-diceroll = random.choices(list(dict.keys()), weights=dict.values(), k=1)
+# diceroll = random.choices(list(dict.keys()), weights=dict.values(), k=1)
 
-print(diceroll)
+# print(diceroll)
