@@ -1,8 +1,6 @@
-import inquirer
 import random
-from char_properties import Character
-from math import floor
-from char_creation_menus import *
+# from char_properties import Character
+# from char_creator import roll
 
 # RACE DATA
 
@@ -145,22 +143,39 @@ sibling_attitude = {
     'Loves you':60,
     'Jealous of you':30
 }
-
+fortune_misfortune = {
+    'Fortune':50,
+    'Misfortune':50
+}
 
 
 #  LIFE EVENT DATA
 life_event = {
-    'Fortune or Misfortune':60,
-    'Allies and Enemies':20,
-    'Romance':20
+    'Fortune or Misfortune':50,
+    'Allies and Enemies':25,
+    'Romance':25
 }
+
+
+#  #########
+#  FORTUNES
+#  #########
+
+
+#  Random variables
 d10 = random.randint(1,10)
 gold = d10 * 100
+
+# Random table for tamed wild animal
 wild_animal = {
     'Wild Dog':50,
     'Wolf':50
 }
 wild_animal_result = str(random.choices(list(wild_animal.keys()), weights=wild_animal.values(), k=1))
+
+
+
+
 fortunes = {
     f'Fortune 1: Gain {gold} gold pieces':10,
     'Fortune 2':10,
@@ -179,19 +194,25 @@ fortunes = {
 
 victim_choices = {'Friend':50,'Lover':30,'Relative':20}
 victim = random.choices(list(victim_choices.keys()), weights=victim_choices.values(), k=1)
+
 causeofdeath_choices = {'an accident':30, 'monsters':30, 'bandits':40}
 causeofdeath = random.choices(list(causeofdeath_choices.keys()), weights=causeofdeath_choices.values(), k=1)
+
 false_crime_choices = {'theft':30, 'cowardice or betrayal':20, 'murder':10, 'assault':30, 'witchcraft':10}
 false_crime = random.choices(list(false_crime_choices.keys()), weights=false_crime_choices.values(), k=1)
+
 law_hunters_choices = {'a few guards':30, 'a small town':40, 'a major city':20, 'an entire kingdom':10}
 law_hunters = random.choices(list(law_hunters_choices.keys()), weights=law_hunters_choices.values(), k=1)
+
 betrayal_choices = {'a family member':20, 'a friend':30, 'a loved one':10, 'an ally':40}
 betrayer = random.choices(list(betrayal_choices.keys()), weights=betrayal_choices.values(), k=1)
+
 months = d10 * 5
 accident_choices = {'A spell went off in your face. You are Disfigured.':30, 
-    f'You were attacked by a wolf pack and it took {months} to heal.':40,
+    f'You were attacked by a wolf pack and it took {months} months to heal.':40,
     f'You fell off a roof and suffered amnesia. You forgot {d10} months of your life.':30}
 accident = random.choices(list(accident_choices.keys()), weights=accident_choices.values(), k=1)
+
 incap_choices = {'You broke your arm.':30, 'You broke your leg.':30, 'You broke your nose.':40}
 incap = random.choices(list(incap_choices.keys()), weights=incap_choices.values(), k=1)
 
@@ -200,11 +221,259 @@ misfortunes = {
     f'Misfortune 1: In debt for {gold} gold pieces':15,
     f'Misfortune 2: Imprisoned for {d10} months':10,
     f'Misfortune 3: You got some mud splashed on you, ruining your favorite shirt!':10,
-    f'Misfortune 4: Your {victim} was killed by {causeofdeath}.':10,
-    f'Misfortune 5: You were falsely accused of {false_crime} and were imprisoned for {d10} months':10,
-    f'Misfortune 6: You committed some crime and were hunted by law enforcement of {law_hunters}':10,
-    f'Misfortune 7: You were betrayed somehow by {betrayer}':10,
-    f'Misfortune 8: You had a horrible accident. {accident}':10, 
-    f'Misfortune 9: You had a bad accident and were incapacitated for {d10} months. {incap}':10,
+    f'Misfortune 4: Your {victim[0]} was killed by {causeofdeath[0]}.':10,
+    f'Misfortune 5: You were falsely accused of {false_crime[0]} and were imprisoned for {d10} months':10,
+    f'Misfortune 6: You committed some crime and were hunted by law enforcement of {law_hunters[0]}':10,
+    f'Misfortune 7: You were betrayed somehow by {betrayer[0]}':10,
+    f'Misfortune 8: You had a horrible accident. {accident[0]}':10, 
+    f'Misfortune 9: You had a bad accident and were incapacitated for {d10} months. {incap[0]}':10,
     f'Misfortune 10: You were cursed.':5
+}
+
+
+#  ###################
+#  ALLIES AND ENEMIES
+#  ###################
+
+gender = {
+    'Male':45,
+    'Female':45,
+    'Nonbinary':10
+}
+allegiance = {
+    'Ally':50,
+    'Enemy':50
+}
+
+# Outline
+#  An ALLY consists of:
+    #  Gender: Male or Female
+    #  1/10 possible positions/jobs
+    #  1/10 possible meeting circumstances
+    # How close is the relationship
+    # Ally's current location/region/fate
+
+
+# he_she
+# him_her
+# his_hers
+def roller(dictionary):
+    # When provided with a dictionary consisting of Keys as strings adn Values as probabilities-out-of-100, roll according to probabilities and output the result.
+    rolled = random.choices(list(dictionary.keys()), weights=dictionary.values(), k=1)
+    rolled_string = rolled[0] # just the string of the result
+
+    dict_items = list(dictionary.items())
+    rolled_index = [id for id, key in enumerate(dict_items) if key[0] == rolled_string] # index of the result, used for conditionally targeting specific table results 
+    # [ex. favorite drink; if you roll Milk, stop; if you roll Soda, ask what kind]
+
+    # pack both string and index into a tuple for export
+    return (rolled_string, rolled_index[0])
+
+def roll_ally(ally_gender): 
+    if ally_gender[1] == 0: # Male
+        he_she = 'he'
+        him_her = 'him'
+        his_hers = 'his'
+        is_are = 'is'
+    elif ally_gender[1] == 1: # Female
+        he_she = 'she'
+        him_her = 'her'
+        his_hers = 'hers'
+        is_are = 'is'
+    else: # Nonbinary
+        he_she = 'they'
+        him_her = 'them'
+        his_hers = 'their'
+        is_are = 'are'
+    ally_position = {
+        'Bounty Hunter':10,
+        'Mage':10,
+        'Mentor or Teacher':10,
+        'Childhood Friend':10,
+        'Craftsman or Merchant':10,
+        'Former Enemy':10,
+        'Noble':10,
+        'Peasant':10,
+        'Soldier':10,
+        'Bard':10
+    }
+    ally_meeting = {
+        f'You saved {him_her} from something':10,
+        f'{he_she} saved you from something':10,
+        f'you met {him_her} in a tavern':10,
+        f'You fought together against something':10,
+        f'You were trapped together somehow':10,
+        f'You met while traveling':10,
+        f'You hired {him_her} to do something':10,
+        f'{he_she} hired you to do something':10,
+        f'You fought against each other and came to mutual respect through combat':10,
+        f'You were forced to work together':10
+    }
+    ally_relationship = {
+        'Acquaintances':40,
+        'Friends':20,
+        'Close Friends':20,
+        'Inseperable':10,
+        'Sworn companions/partners':10
+    }
+
+    ally_locations = {
+        'a nearby town':30,
+        'the country\'s grand capitol':30,
+        'a peaceful village':20,
+        'a small hut in the middle of nowhere':10
+    }
+    al_location_tuple = roller(ally_locations)
+    al_location = al_location_tuple[0]
+    ally_fate = {
+        f'{he_she} {is_are} gone in a far-off land':30,
+        f'{he_she} {is_are} frequently somewhere nearby when you least expect {him_her}':25,
+        f'{he_she} settled down in {al_location}.':30,
+        f'{he_she} wanders the roads of adventure like you. Who knows where {he_she} {is_are} now?':10,
+        f'Surprise! {he_she} {is_are} travelling with you as a party member! Work with your Game Master to create this character.':5
+    }
+
+
+
+
+    # al_gender_tuple = roller(gender)
+    # al_gender = al_gender_tuple[0]
+    al_position_tuple = roller(ally_position)
+    al_position = al_position_tuple[0]
+    al_meeting_tuple = roller(ally_meeting)
+    al_meeting = al_meeting_tuple[0]
+    al_relationship_tuple = roller(ally_relationship)
+    al_relationship = al_relationship_tuple[0]
+
+    al_fate_tuple = roller(ally_fate)
+    al_fate = al_fate_tuple[0]
+
+
+    complete_ally = [
+        ally_gender[0],
+        al_position,
+        al_meeting,
+        al_relationship,
+        al_location,
+        al_fate
+    ]
+    return complete_ally
+
+# An ENEMY consists of:
+    # Gender: Male or Female
+    # 1/10 possible position/relationships-to-you
+    # Power level on a scale of 1-10
+    # Nature of their power
+    # Conflict:
+        # 1/10 possible Causes
+        # Who was wronged
+        # How far has it escalated?
+
+# enemy_position = {
+#     'Former Friend':10,
+#     'Former Lover':10,
+#     'Relative':10,
+#     'Childhood Enemy':10,
+#     'A Bandit':10,
+#     'A Noble':10,
+#     'A Mage':10,
+#     'A Sentient Monster':5,
+#     'A Soldier':10,
+#     'A prevoiusly defeated villain':5
+# }
+
+enemy_position = {
+    'Position 1':10,
+    'Position 2':10,
+    'Position 3':10,
+    'Position 4':10,
+    'Position 5':10,
+    'Position 6':10,
+    'Position 7':10,
+    'Position 8':10,
+    'A Sentient Monster':5,
+    'A prevoiusly defeated villain':5
+}
+enemy_power = [1,2,3,4,5,6,7,8,9,10]
+
+enemy_strength = {
+    'Social Power':20,
+    'Knowledge':20,
+    'Physical':30,
+    'Minions':20,
+    'Magic':10
+}
+# enemy_conflict_cause = {
+#     'Assaulted the offended party':10,
+#     'Caused the loss of a loved one':10,
+#     'A major humiliation':10,
+#     'Caused a monster attack':10,
+#     'Romantic rejection':10,
+#     'Accused of witchcraft':10,
+#     'Blackmail':10,
+#     'Grievous wound':10,
+#     'Foiled plans':10,
+#     'Cursed':10
+# }
+enemy_conflict_cause = {
+    'Conflict Cause ':10,
+    'Conflict Cause ':10,
+    'Conflict Cause ':10,
+    'Conflict Cause ':10,
+    'Conflict Cause ':10,
+    'Conflict Cause ':10,
+    'Conflict Cause ':10,
+    'Conflict Cause ':10,
+    'Conflict Cause ':10,
+    'Conflict Cause ':10
+}
+enemy_conflict_victim = {
+    'The enemy wronged you':50,
+    'You wronged the enemy':50
+}
+enemy_conflict_escalation = {
+    'Conflict has mostly been forgotten':20,
+    'They/You plan to Backstab':20,
+    'They/You will attack if encountered':30,
+    'They/You are hunting for revenge':20,
+    'They/You are out for blood':20
+}
+
+
+
+
+#  ##########
+#  ROMANCE
+#  ########
+
+romance_type = {
+    'A happy love affair':10,
+    'A romantic tragedy':30,
+    'A problematic romance':20,
+    'Sleeping around':40
+}
+
+romantic_tragedy = {
+    'Tragedy 1':10,
+    'Tragedy 2':10,
+    'Tragedy 3':10,
+    'Tragedy 4':10,
+    'Tragedy 5':10,
+    'Tragedy 6':10,
+    'Tragedy 7':10,
+    'Tragedy 8':10,
+    'Tragedy 9':10,
+    'Tragedy 10':10,
+}
+problematic_love = {
+    'Romantic Problems 1':10,
+    'Romantic Problems 2':10,
+    'Romantic Problems 3':10,
+    'Romantic Problems 4':10,
+    'Romantic Problems 5':10,
+    'Romantic Problems 6':10,
+    'Romantic Problems 7':10,
+    'Romantic Problems 8':10,
+    'Romantic Problems 9':10,
+    'Romantic Problems 10':10,
 }

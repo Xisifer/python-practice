@@ -1,8 +1,15 @@
 import inquirer
 import random
 from char_properties import Character
-from math import floor
 from char_creation_menus import *
+# from char_creation_rollers import *
+
+from char_creation_rollers import roll_race
+from char_creation_rollers import roll_homeland
+from char_creation_rollers import roll_origin
+from char_creation_rollers import roll_family_fate
+from char_creation_rollers import roll_parents
+from char_creation_rollers import roll_life_events
 
 
 # def bare_text(string):
@@ -12,21 +19,13 @@ from char_creation_menus import *
 #     stripped_text = strip2.strip("\'") # remove 'single quotes'
 #     return stripped_text
 
-def roll(dictionary):
-    
-    rolled = random.choices(list(dictionary.keys()), weights=dictionary.values(), k=1)
-    rolled_string = rolled[0]
-    print(f'rolled_string is: {rolled_string}')
-
-    dict_items = list(dictionary.items())
-    rolled_index = [id for id, key in enumerate(dict_items) if key[0] == rolled_string]
-    print(f'rolled_index[0] is: {rolled_index[0]}')
-
-    # pack both string and index into a tuple for export
 
 
-
-    return (rolled_string, rolled_index[0])
+def flip():
+    if random.randint(0,1):
+        return 0
+    else:
+        return 1
 
 
 
@@ -37,7 +36,7 @@ def name_input():
 
 
 def store_data(category, selection):
-    print(f'Saving {selection} into character {category}...')
+    # print(f'Saving {selection} into character {category}...')
     Character.category = selection
 
 
@@ -64,131 +63,15 @@ def store_data(category, selection):
             Character.category = selection
             print(f'Character.category is {selection}')
 
+def check_saved_data():
+    print('Total saved character data so far: ')
 
-def roll_race():
-
-    race_result = roll(races)
-    return race_result
-
-def roll_homeland(race_result):
-   
-    match race_result:
-        case 'Human' | 'Dwarf':
-            char_home = roll(human_homes)
-            print(f'returning:  {char_home}')
-            return char_home
-
-        case 'Elf' | 'Halfling' | 'Gnome':
-            char_home = roll(fey_homes)
-            print(f'returning:  {char_home}')
-            return char_home
-        
-        case 'Dragonborn' | 'Orc' | 'Goblin' | 'Kobold' | 'Gnoll':
-            char_home = roll(savage_homes)
-            print(f'returning:  {char_home}')
-            return char_home
-        case _:
-            print('ERROR: Race not valid!')
-
-
-
-def roll_origin(race_result, char_home):
-    
-
-    match race_result:
-        case 'Human' | 'Dwarf':
-
-            char_origin = roll(human_origins)
-            print(char_origin)
-            origin_flavor = roll(urban_flavor)
-            print(origin_flavor)
-            return char_origin
-
-        case 'Elf' | 'Halfling' | 'Gnome':
-
-            char_origin = roll(fey_origins)
-            print(char_origin)
-            origin_flavor = roll(wild_flavor)
-            print(origin_flavor)
-            return char_origin
-        
-        case 'Dragonborn' | 'Orc' | 'Goblin' | 'Kobold' | 'Gnoll':
-
-            char_origin = roll(savage_origins)
-            print(char_origin)
-            origin_flavor = roll(savage_flavor)
-            return char_origin
-
-def roll_family_fate(race_result):
-
-
-    char_family_status = roll(family_status)
-    char_family_status_id = char_family_status[1]
-    if char_family_status_id == 0:
-        print('Your family is alive and well.')
-        return char_family_status
-    else:
-        print('Something happened to your family.')
-        
-        match race_result:
-            case 'Human' | 'Dwarf':
-
-                char_family_fate = roll(family_fate_human)
-                print(char_family_fate)
-
-                return char_family_fate
-
-            case 'Elf' | 'Halfling' | 'Gnome':
-
-                char_family_fate = roll(family_fate_fey)
-                print(char_family_fate)
-                return char_family_fate
-            
-            case 'Dragonborn' | 'Orc' | 'Goblin' | 'Kobold' | 'Gnoll':
-
-                char_family_fate = roll(family_fate_savage)
-                print(char_family_fate)
-                return char_family_fate
-
-def roll_parents():
-
-    char_parents_status = roll(parents_status)
-    char_parents_status_id = char_parents_status[1]
-
-    if char_parents_status_id == 0:
-        return char_parents_status
-    else:
-        char_parents_fate = roll(parents_fate)
-        print(char_parents_fate)
-        char_parents_fate_id = char_parents_fate[1]
-        if char_parents_fate_id == 0:
-            char_father_fate = roll(father_fate)
-            print(char_father_fate)
-            return char_father_fate
-        else:
-            char_mother_fate = roll(mother_fate)
-            print(char_mother_fate)
-            return char_mother_fate
-
-# def roll_family_events():
-    
-
-def roll_life_events(race_result, char_age):
-
-
-
-    event_category = roll(life_event)
-    event_category_id = event_category[1]
-    print(f'You rolled: {event_category} with ID {event_category_id}')
-    if event_category_id == 0: # Fortune or Misfortune
-        print('Fortune or Misfortune...')
-
-        print(f'1d10 x 100 gold = {gold}')
-
-    elif event_category_id == 1: # Allies and Enemies
-        print('Allies and Enemies')
-    else: #Romance
-        print('Romance')
+    if __name__ == '__main__':
+        temp = vars(Character)
+        for item in temp:
+            if not item.startswith('__'):
+                if not item.startswith('category'):
+                    print(item , ' : ' , temp[item])
 
 
 
@@ -208,76 +91,77 @@ def ask_reroll(question_text, roll_result):
     else:
         print("Moving on...")
         return False
+    
+
+def char_question(q_text, roll_choice, category, insert_data): 
+
+
+
+
+    # is_tuple = 
+
+    if type(insert_data) is tuple:
+        # print(f'The tuple is {len(insert_data)} items long.')
+        i=0
+        while i < len(insert_data):
+            print(insert_data[i])
+            i=i+1
+        # print(f'first data of tuple {insert_data} is {insert_data[0]}.')
+        insert_data = insert_data[0]
+        # print(f'insert_data[0] is: {insert_data}')
+    else:
+        insert_data = insert_data
+        # print(f'insert_data is: {insert_data}')
+
+    retry = True
+    while retry :
+        
+        question_text = q_text
+        
+        question_result_tuple = roll_choice(insert_data)
+        question_result = question_result_tuple[0]
+        
+        # print(f'==========\nDEBUG\n==========')
+        # print(f'question_result is: {question_result}')
+        
+        # print(f'Beginning char_question')
+        # print(f'roll_choice is: {roll_choice}')
+        # print(f'category is: {category}')
+        # print(f'insert_data is: {insert_data}')
+        # print(f'==========\nEND DEBUG\n==========')
+        retry = ask_reroll(question_text, question_result)
+    store_data(category, question_result)
+    return question_result
 
 def char_creation():
-        
+
     # question 1: Race
-    retry = True
-    while retry :
-        question_text = 'Your character is a...'
-        race_result_tuple = roll_race()
-        race_result = race_result_tuple[0]
-        retry = ask_reroll(question_text, race_result) 
-    category = 'race'
-    store_data(category, race_result)
-
+    print(f'============\nQUESTION 1\n============')
+    race_result = char_question('Choose race:', roll_race, 'race', '')
+    
     # question 2: Homeland
-    retry = True
-    while retry :
-        question_text = 'Your character is from...'
-        char_home_tuple = roll_homeland(race_result)
-        char_home = char_home_tuple[0]
-        retry = ask_reroll(question_text, char_home) 
-    category = 'home'
-    Character.origin = char_home
-    store_data(category, char_home) 
+    print(f'============\nQUESTION 2\n============')
+    char_home = char_question('Your homeland:', roll_homeland, 'home', race_result)
 
-
-
-    #  question 3: Origin
-    retry = True
-    while retry :
-        question_text = 'Your childhood: '
-        char_origin_tuple = roll_origin(race_result, char_home)
-        char_origin = char_origin_tuple[0]
-        retry = ask_reroll(question_text, char_origin) 
-    category = 'origin'
-    store_data(category, char_origin) 
-
-
-    print('Total saved character data so far: ')
-
-    if __name__ == '__main__':
-        temp = vars(Character)
-        for item in temp:
-            if not item.startswith('__'):
-                if not item.startswith('category'):
-                    print(item , ' : ' , temp[item])
-
-
+    # question 3: Origin
+    print(f'============\nQUESTION 3\n============')
+    # packing up Q1 & Q2 into a tuple
+    char_data = (race_result, char_home)
+    print(f'Beginning Question 3 with char_data: {char_data}')
+    char_question('Your character is from:', roll_origin, 'origin', char_data)
 
 
     # question 4: Family status
-    retry = True
-    while retry :
-        question_text = 'Your family...'
-        char_family_tuple = roll_family_fate(race_result)
-        char_family = char_family_tuple[0]
-        retry = ask_reroll(question_text, char_family) 
-    category = 'family'
-    store_data(category, char_family) 
+    print(f'============\nQUESTION 4\n============')
+    char_question('Your character\'s family:', roll_family_fate, 'family', race_result)
 
     # question 5: Parents status
-    retry = True
-    while retry :
-        question_text = 'Your parents...'
-        char_parents_tuple = roll_parents()
-        char_parents = char_parents_tuple[0]
-        retry = ask_reroll(question_text, char_parents) 
-    category = 'parents'
-    store_data(category, char_parents) 
+    print(f'============\nQUESTION 5\n============')
+    print(f'inserting race_result {race_result} into roll_parents')
+    char_question('Your character\'s parents:', roll_parents, 'parents', race_result)
 
     # question 6: Life Path
+    print(f'============\nQUESTION 6\n============')
     print('This RPG assumes a major noteworthy event happened to you every 5 years.')
 
     while True:
@@ -296,7 +180,7 @@ def char_creation():
 
     age = 0
     life_milestones = []
-    for age in range(0, char_age, 5):
+    for age in range(5, char_age, 5):
         life_milestones.append(age)
 
     life_events_num = len(life_milestones)
@@ -309,11 +193,11 @@ def char_creation():
 
     # question 7
 
-    retry = True
-    while retry :
-        question_text = 'Major Life Events'
-        char_life_events = roll_life_events(race_result, char_age)
-        retry = ask_reroll(question_text, char_life_events) 
+    # retry = True
+    # while retry :
+    question_text = 'Major Life Events'
+    char_life_events = roll_life_events(race_result, char_age, life_milestones)
+    # retry = ask_reroll(question_text, char_life_events) 
     category = 'life events'
     store_data(category, char_life_events) 
 
