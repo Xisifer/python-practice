@@ -1,8 +1,6 @@
-import inquirer
 import random
-from char_properties import Character
-from math import floor
-from char_creation_menus import *
+# from char_properties import Character
+# from char_creator import roll
 
 # RACE DATA
 
@@ -153,9 +151,9 @@ fortune_misfortune = {
 
 #  LIFE EVENT DATA
 life_event = {
-    'Fortune or Misfortune':60,
-    'Allies and Enemies':20,
-    'Romance':20
+    'Fortune or Misfortune':50,
+    'Allies and Enemies':25,
+    'Romance':25
 }
 
 
@@ -242,6 +240,10 @@ gender = {
     'Female':45,
     'Nonbinary':10
 }
+allegiance = {
+    'Ally':50,
+    'Enemy':50
+}
 
 # Outline
 #  An ALLY consists of:
@@ -251,53 +253,111 @@ gender = {
     # How close is the relationship
     # Ally's current location/region/fate
 
-ally_position = {
-    'A Bounty Hunter':10,
-    'A Mage':10,
-    'A Mentor or Teacher':10,
-    'A Childhood Friend':10,
-    'A Craftsman or Merchant':10,
-    'A Former Enemy':10,
-    'A Noble':10,
-    'A Peasant':10,
-    'A Soldier':10,
-    'A Bard':10
-}
-ally_meeting = {
-    'You saved them from something':10,
-    'They saved you from something':10,
-    'Met in a tavern':10,
-    'You fought together against something':10,
-    'You were trapped together somehow':10,
-    'You met while traveling':10,
-    'You hired them to do something':10,
-    'They hired you to do something':10,
-    'You fought against each other and came to mutual respect through combat':10,
-    'You were forced to work together':10
-}
-ally_relationship = {
-    'Acquaintances':40,
-    'Friends':20,
-    'Close Friends':20,
-    'Inseperable':10,
-    'Sworn companions/partners':10
-}
 
-ally_locations = {
-    'a nearby town':30,
-    'the country\'s grand capitol':30,
-    'a peaceful village':20,
-    'a small hut in the middle of nowhere':10
-}
+# he_she
+# him_her
+# his_hers
+def roller(dictionary):
+    # When provided with a dictionary consisting of Keys as strings adn Values as probabilities-out-of-100, roll according to probabilities and output the result.
+    rolled = random.choices(list(dictionary.keys()), weights=dictionary.values(), k=1)
+    rolled_string = rolled[0] # just the string of the result
 
-ally_fate = {
-    'They are gone in a far-off land':30,
-    'They are somewhere nearby when you least expect them':25,
-    'They settled down in {location}.':30,
-    'They wander the roads of adventure like you. Who knows where they are now?':10,
-    'Surprise! They\'re travelling with you as a party member!':5
-}
+    dict_items = list(dictionary.items())
+    rolled_index = [id for id, key in enumerate(dict_items) if key[0] == rolled_string] # index of the result, used for conditionally targeting specific table results 
+    # [ex. favorite drink; if you roll Milk, stop; if you roll Soda, ask what kind]
 
+    # pack both string and index into a tuple for export
+    return (rolled_string, rolled_index[0])
+
+def roll_ally(ally_gender): 
+    if ally_gender[1] == 0: # Male
+        he_she = 'he'
+        him_her = 'him'
+        his_hers = 'his'
+        is_are = 'is'
+    elif ally_gender[1] == 1: # Female
+        he_she = 'she'
+        him_her = 'her'
+        his_hers = 'hers'
+        is_are = 'is'
+    else: # Nonbinary
+        he_she = 'they'
+        him_her = 'them'
+        his_hers = 'their'
+        is_are = 'are'
+    ally_position = {
+        'Bounty Hunter':10,
+        'Mage':10,
+        'Mentor or Teacher':10,
+        'Childhood Friend':10,
+        'Craftsman or Merchant':10,
+        'Former Enemy':10,
+        'Noble':10,
+        'Peasant':10,
+        'Soldier':10,
+        'Bard':10
+    }
+    ally_meeting = {
+        f'You saved {him_her} from something':10,
+        f'{he_she} saved you from something':10,
+        f'you met {him_her} in a tavern':10,
+        f'You fought together against something':10,
+        f'You were trapped together somehow':10,
+        f'You met while traveling':10,
+        f'You hired {him_her} to do something':10,
+        f'{he_she} hired you to do something':10,
+        f'You fought against each other and came to mutual respect through combat':10,
+        f'You were forced to work together':10
+    }
+    ally_relationship = {
+        'Acquaintances':40,
+        'Friends':20,
+        'Close Friends':20,
+        'Inseperable':10,
+        'Sworn companions/partners':10
+    }
+
+    ally_locations = {
+        'a nearby town':30,
+        'the country\'s grand capitol':30,
+        'a peaceful village':20,
+        'a small hut in the middle of nowhere':10
+    }
+    al_location_tuple = roller(ally_locations)
+    al_location = al_location_tuple[0]
+    ally_fate = {
+        f'{he_she} {is_are} gone in a far-off land':30,
+        f'{he_she} {is_are} frequently somewhere nearby when you least expect {him_her}':25,
+        f'{he_she} settled down in {al_location}.':30,
+        f'{he_she} wanders the roads of adventure like you. Who knows where {he_she} {is_are} now?':10,
+        f'Surprise! {he_she} {is_are} travelling with you as a party member! Work with your Game Master to create this character.':5
+    }
+
+
+
+
+    # al_gender_tuple = roller(gender)
+    # al_gender = al_gender_tuple[0]
+    al_position_tuple = roller(ally_position)
+    al_position = al_position_tuple[0]
+    al_meeting_tuple = roller(ally_meeting)
+    al_meeting = al_meeting_tuple[0]
+    al_relationship_tuple = roller(ally_relationship)
+    al_relationship = al_relationship_tuple[0]
+
+    al_fate_tuple = roller(ally_fate)
+    al_fate = al_fate_tuple[0]
+
+
+    complete_ally = [
+        ally_gender[0],
+        al_position,
+        al_meeting,
+        al_relationship,
+        al_location,
+        al_fate
+    ]
+    return complete_ally
 
 # An ENEMY consists of:
     # Gender: Male or Female
