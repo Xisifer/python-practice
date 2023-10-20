@@ -94,103 +94,74 @@ def ask_reroll(question_text, roll_result):
     
 
 def char_question(q_text, roll_choice, category, insert_data): 
-    # is_tuple = type(insert_data) is tuple
 
-    # if is_tuple:
-    #     print(f'The tuple is {len(insert_data)} items long.')
-    #     i=0
-    #     while i < len(insert_data):
-    #         print(insert_data[i])
-    #         i=i+1
-    #     print(f'first data of tuple {insert_data} is {insert_data[0]}.')
-    #     insert_data = insert_data[0]
-    # else:
-    #     insert_data = insert_data
+
+
+
+    # is_tuple = 
+
+    if type(insert_data) is tuple:
+        # print(f'The tuple is {len(insert_data)} items long.')
+        i=0
+        while i < len(insert_data):
+            print(insert_data[i])
+            i=i+1
+        # print(f'first data of tuple {insert_data} is {insert_data[0]}.')
+        insert_data = insert_data[0]
+        # print(f'insert_data[0] is: {insert_data}')
+    else:
+        insert_data = insert_data
+        # print(f'insert_data is: {insert_data}')
 
     retry = True
     while retry :
+        
         question_text = q_text
+        
         question_result_tuple = roll_choice(insert_data)
         question_result = question_result_tuple[0]
+        
+        # print(f'==========\nDEBUG\n==========')
+        # print(f'question_result is: {question_result}')
+        
+        # print(f'Beginning char_question')
+        # print(f'roll_choice is: {roll_choice}')
+        # print(f'category is: {category}')
+        # print(f'insert_data is: {insert_data}')
+        # print(f'==========\nEND DEBUG\n==========')
         retry = ask_reroll(question_text, question_result)
     store_data(category, question_result)
     return question_result
 
 def char_creation():
-# spv-21-pub:/var/lib/dnsmasq/dnsmasq.leases
-# OLD SETTINGS
-# 1696653797 ea:2c:dc:2e:eb:02 9.40.195.150 ltcden12-lp20 01:ea:2c:dc:2e:eb:02
-# CURRENT MAC
-# ea:2c:d5:7f:e0:02 
-
 
     # question 1: Race
+    print(f'============\nQUESTION 1\n============')
     race_result = char_question('Choose race:', roll_race, 'race', '')
     
     # question 2: Homeland
+    print(f'============\nQUESTION 2\n============')
     char_home = char_question('Your homeland:', roll_homeland, 'home', race_result)
 
-
-
-    # retry = True
-    # while retry :
-    #     question_text = 'Your character is from...'
-    #     char_home_tuple = roll_homeland(race_result)
-    #     char_home = char_home_tuple[0]
-    #     retry = ask_reroll(question_text, char_home) 
-    # category = 'home'
-    # Character.origin = char_home
-    # store_data(category, char_home) 
-
     # question 3: Origin
-
+    print(f'============\nQUESTION 3\n============')
     # packing up Q1 & Q2 into a tuple
     char_data = (race_result, char_home)
-
+    print(f'Beginning Question 3 with char_data: {char_data}')
     char_question('Your character is from:', roll_origin, 'origin', char_data)
 
 
-
-    #  question 3: Origin
-    # retry = True
-    # while retry :
-    #     question_text = 'Your childhood: '
-    #     char_origin_tuple = roll_origin(race_result, char_home)
-    #     char_origin = char_origin_tuple[0]
-    #     retry = ask_reroll(question_text, char_origin) 
-    # category = 'origin'
-    # store_data(category, char_origin) 
-
-
-
-
-
     # question 4: Family status
-    char_question('Your character\'s family:', roll_family_fate, race_result, 'family')
-
-
-    # retry = True
-    # while retry :
-    #     question_text = 'Your family...'
-    #     char_family_tuple = roll_family_fate(race_result)
-    #     char_family = char_family_tuple[0]
-    #     retry = ask_reroll(question_text, char_family) 
-    # category = 'family'
-    # store_data(category, char_family) 
+    print(f'============\nQUESTION 4\n============')
+    char_question('Your character\'s family:', roll_family_fate, 'family', race_result)
 
     # question 5: Parents status
-    char_question('Your character\'s family:', roll_family_fate, race_result, 'family')
-
-    # retry = True
-    # while retry :
-    #     question_text = 'Your parents...'
-    #     char_parents_tuple = roll_parents()
-    #     char_parents = char_parents_tuple[0]
-    #     retry = ask_reroll(question_text, char_parents) 
-    # category = 'parents'
-    # store_data(category, char_parents) 
+    print(f'============\nQUESTION 5\n============')
+    print(f'inserting race_result {race_result} into roll_parents')
+    char_question('Your character\'s parents:', roll_parents, 'parents', race_result)
 
     # question 6: Life Path
+    print(f'============\nQUESTION 6\n============')
     print('This RPG assumes a major noteworthy event happened to you every 5 years.')
 
     while True:

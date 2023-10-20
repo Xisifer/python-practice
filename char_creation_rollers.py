@@ -43,24 +43,25 @@ def roll_origin(race_result):
         case 'Human' | 'Dwarf':
 
             char_origin = roll(human_origins)
-            print(char_origin)
+            print(char_origin[0])
             origin_flavor = roll(urban_flavor)
-            print(origin_flavor)
+            print(origin_flavor[0])
             return char_origin
 
         case 'Elf' | 'Halfling' | 'Gnome':
 
             char_origin = roll(fey_origins)
-            print(char_origin)
+            print(char_origin[0])
             origin_flavor = roll(wild_flavor)
-            print(origin_flavor)
+            print(origin_flavor[0])
             return char_origin
         
         case 'Dragonborn' | 'Orc' | 'Goblin' | 'Kobold' | 'Gnoll':
 
             char_origin = roll(savage_origins)
-            print(char_origin)
+            print(char_origin[0])
             origin_flavor = roll(savage_flavor)
+            print(origin_flavor[0])
             return char_origin
 
 def roll_family_fate(race_result):
@@ -73,11 +74,12 @@ def roll_family_fate(race_result):
         return char_family_status
     else:
         print('Something happened to your family.')
-        
+        print(f'Your race is: {race_result}')
         match race_result:
             case 'Human' | 'Dwarf':
 
                 char_family_fate = roll(family_fate_human)
+                print(f'returning char_family_fate as: {char_family_fate}')
                 return char_family_fate
 
             case 'Elf' | 'Halfling' | 'Gnome':
@@ -90,7 +92,7 @@ def roll_family_fate(race_result):
                 char_family_fate = roll(family_fate_savage)
                 return char_family_fate
 
-def roll_parents():
+def roll_parents(char_race):
 
     char_parents_status = roll(parents_status)
     char_parents_status_index = char_parents_status[1]
@@ -114,12 +116,14 @@ def roll_parents():
     
 
 def roll_life_events(race_result, char_age, life_milestones):
-    print('Expecting an incoming tuple. Need 3 pieces of data.')
+    # print('Expecting an incoming tuple. Need 3 pieces of data.')
+
+    from char_creator import ask_reroll
 
     life_events_num = len(life_milestones)
 
     def roll_event(life_age): 
-        # print(f'At age {life_age}...')
+        print(f'At age {life_age}...')
         
         
         # print(f'You rolled: {event_category} with ID {event_category_index}')
