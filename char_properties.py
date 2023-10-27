@@ -16,6 +16,7 @@ class Character:
         self.origin = charOrigin
         self.age = charAge
         self.family = charFamily
+    def rollRace(): print('hi')
 
 # leon = Character("Male", "Human", 'Spain')
 
