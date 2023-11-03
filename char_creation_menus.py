@@ -1,6 +1,5 @@
 import random
-# from char_properties import Character
-# from char_creator import roll
+
 
 # RACE DATA
 
@@ -285,6 +284,7 @@ def roll_ally(ally_gender):
         him_her = 'them'
         his_hers = 'their'
         is_are = 'are'
+    ally_race = roll_race()
     ally_position = {
         'Bounty Hunter':10,
         'Mage':10,
@@ -344,6 +344,7 @@ def roll_ally(ally_gender):
     al_meeting = al_meeting_tuple[0]
     al_relationship_tuple = roller(ally_relationship)
     al_relationship = al_relationship_tuple[0]
+    al_race = roller(races)
 
     al_fate_tuple = roller(ally_fate)
     al_fate = al_fate_tuple[0]
@@ -351,6 +352,7 @@ def roll_ally(ally_gender):
 
     complete_ally = [
         ally_gender[0],
+        al_race,
         al_position,
         al_meeting,
         al_relationship,

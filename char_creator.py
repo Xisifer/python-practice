@@ -179,15 +179,27 @@ def char_creation():
 
 
     for i in life_milestones:
-        event_category = char_question(f'At age {i}, you... ', roll_life_events, 'life events', life_event_data)
+        event_category = roll(life_event)
         event_category_index = event_category[1]
         event_category_result = event_category[0]
+
         if event_category_index == 0: 
-            # 10/27/23: LEFT OFF CODE HERE. Need to figure out how to make those two other arguments be nothing, because roll_fortune doesn't need a category or data passed in.
-            char_question(f'Fortune or Misfortune?', roll_fortune, null, null)
-            print(f'Roll on Fortune/Misfortune')
-        elif event_category_index == 1
-        # char_question(f'At this age, you...', roll_event, 'event', char_age)
+            print(f'event_category_index is: {event_category_index}')
+            good_bad = roll(fortune_misfortune)
+            char_question(f'Fortune or Misfortune?', roll_fortune, '', '')
+            print(f'You chose: {good_bad}')
+
+        elif event_category_index == 1:
+            print(f'event_category_index is: {event_category_index}')
+            char_question(f'You met someone! Were they an Ally or an Enemy?', roll_npc, 'npc', '')
+            # print(f'They were: {npc_ally_enemy}')
+            
+        else:
+            print(f'event_category_index is: {event_category_index}')
+            print(f'You rolled: {event_category_result} at index {event_category_index}')
+
+
+
     category = 'life events'
     store_data(category, 'life events') 
 

@@ -121,19 +121,14 @@ def roll_parents(race_result):
 
 
 def roll_life_events(life_event_data):
-    print('Expecting an incoming tuple. Need 3 pieces of data.')
-    print(f'Incoming data is: {life_event_data}')
-    race_result = life_event_data[0]
-    char_age = life_event_data[1]
-    life_milestones = life_event_data[2]
-
-    life_events_num = len(life_milestones)
-
-# def roll_event(life_age): 
-        
+    # print(f'Incoming data is: {life_event_data}')
+    # race_result = life_event_data[0]
+    # char_age = life_event_data[1]
+    # life_milestones = life_event_data[2]
+    # life_events_num = len(life_milestones)
 
     event = roll(life_event)
-    
+    print(f'LIFE EVENT ROLL: {event}')
     # retry = True
     # while retry :
     #     question_text = f'At age {life_age}...'
@@ -144,7 +139,11 @@ def roll_life_events(life_event_data):
     # if event_category_index == 0: # Fortune or Misfortune
         # print('Fortune or Misfortune...')
         # even_odd = flip()
-def roll_fortune():
+
+    return event
+
+
+def roll_fortune(string):
     retry = True
     while retry :
         question_text = 'Fortune or Misfortune? '
@@ -165,15 +164,18 @@ def roll_fortune():
     else: # Misfortune
         retry = True
         while retry :
-            question_text = 'You sufered Misfortune: '
+            question_text = 'You suffered Misfortune: '
             misfortune_tuple = roll(misfortunes)
             misfortune_result = misfortune_tuple[0]
             misfortune_index = misfortune_tuple[1]
             retry = ask_reroll(question_text, misfortune_result) 
 
-def roll_npc: 
+
+
+def roll_npc(string): 
     # elif event_category_index == 1: # Allies and Enemies
-    print('Allies and Enemies')
+    print(f'Inside roll_npc, string is {string}')
+    print(f'Allies and Enemies')
     retry = True
     while retry :
         question_text = 'You made an Ally? Or an Enemy? '
@@ -189,7 +191,7 @@ def roll_npc:
             ally_gender = roll(gender)
             complete_ally = roll_ally(ally_gender)
             print(f'complete_ally is: {complete_ally}')
-            ally_summary = f'You met a {ally_gender[0]} {complete_ally[1]}, and {complete_ally[2]}. \nYou became {complete_ally[3]} for many years. \nEventually you parted ways in {complete_ally[4]}. \nToday, {complete_ally[5]}.'
+            ally_summary = f'You met a {ally_gender[0]} {complete_ally[1]} {complete_ally[2]}, and {complete_ally[3]}. \nYou became {complete_ally[4]} for many years. \nEventually you parted ways in {complete_ally[5]}. \nToday, {complete_ally[6]}.'
             # complete_ally = [
             #     al_gender,
             #     al_position,
@@ -209,10 +211,10 @@ def roll_npc:
             misfortune_index = misfortune_tuple[1]
             retry = ask_reroll(question_text, misfortune_result) 
 
-def roll_romance: 
+def roll_romance(): 
     print('Romance')
     print(f'You have had {life_events_num} events.')
 
-for life_age in life_milestones:
-roll_event(life_age)
+    for life_age in life_milestones:
+        roll_event(life_age)
 
