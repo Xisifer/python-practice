@@ -44,7 +44,7 @@ wild_flavor = {
     'Growing up in the wild taught you to be tough and self-sufficient.':30
 }
 savage_flavor = {
-    'Life in the {homeland} was tough. You fought to survive.':30,
+    'Life in your homeland was tough. You had to fight to survive.':30,
     'Only the strongest survive. You did whatever necessary to be the best.':70
 }
 
