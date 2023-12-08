@@ -1,6 +1,6 @@
 from char_creation_menus import *
 from general_functions import *
-
+from char_save_data import *
 
 def roll(dictionary):
     # When provided with a dictionary consisting of Keys as strings adn Values as probabilities-out-of-100, roll according to probabilities and output the result.
@@ -130,7 +130,7 @@ def roll_life_events(data):
     return event_result
 
 
-def roll_fortune():
+def roll_fortune(race_result):
     print('inside roll_fortune function...')
     print('roll_fortune: running roll(fortune_misfortune)')
 

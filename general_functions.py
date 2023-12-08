@@ -1,7 +1,7 @@
 import inquirer
 import random
 from char_properties import Character
-
+from char_save_data import *
 
 def ask_reroll(question_text, roll_result):
     choice_menu = {
@@ -13,16 +13,14 @@ def ask_reroll(question_text, roll_result):
     answer = inquirer.prompt(choice_menu)
 
     if answer['menu'] == 'Reroll':
-        print("Rerolling...")
         return True
     else:
-        print("Moving on...")
         return False
     
 
 
 
-def char_question(q_text, roll_choice, category, insert_data): 
+def char_question(q_text, roll_choice, insert_data): 
 
 
 # ===============
@@ -67,50 +65,14 @@ def char_question(q_text, roll_choice, category, insert_data):
     while retry :
         question_text = q_text
         question_result_tuple = roll_choice(insert_data)
+        print(f'question_result_tuple is: {question_result_tuple}')
         question_result = question_result_tuple[0]
+        print(f'question_result_tuple[0] is: {question_result_tuple[0]}')
         retry = ask_reroll(question_text, question_result)
-    store_data(category, question_result)
-    return question_result
+        print(f'Returning full tuple of roll result: {question_result_tuple}')
+    
+    return question_result_tuple
 
-
-def check_saved_data():
-    print('Total saved character data so far: ')
-
-    if __name__ == '__main__':
-        temp = vars(Character)
-        for item in temp:
-            if not item.startswith('__'):
-                if not item.startswith('category'):
-                    print(item , ' : ' , temp[item])
-
-
-def store_data(category, selection):
-    # print(f'Saving {selection} into character {category}...')
-    Character.category = selection
-
-
-    match category:
-        case 'race': 
-            Character.race = selection
-            print(f'Data saved. Character\'s {category} is now {Character.race}')        
-        case 'home': 
-            Character.home = selection
-            print(f'Data saved. Character\'s {category} is now {Character.home}')       
-        case 'origin':
-            Character.origin = selection
-            print(f'Data saved. Character\'s {category} is now {Character.origin}')
-        case 'age':
-            Character.age = selection
-            print(f'Data saved. Character\'s {category} is now {Character.age}')
-        case 'family':
-            Character.family = selection
-            print(f'Data saved. Character\'s {category} is now {Character.family}')       
-        case 'parents':
-            Character.family = selection
-            print(f'Data saved. Character\'s {category} is now {Character.family}')
-        case _: 
-            Character.category = selection
-            print(f'Character.category is {selection}')
 
 
 

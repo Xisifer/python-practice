@@ -18,6 +18,10 @@ class Character:
         self.family = charFamily
     def rollRace(): print('hi')
 
+
+
+
+
 # leon = Character("Male", "Human", 'Spain')
 
 # print("This character is a",Character.gender, Character.race)
