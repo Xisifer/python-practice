@@ -189,7 +189,9 @@ fortunes = {
 }
 
 
-
+#  #########
+#  MISFORTUNES
+#  #########
 
 victim_choices = {'Friend':50,'Lover':30,'Relative':20}
 victim = random.choices(list(victim_choices.keys()), weights=victim_choices.values(), k=1)
@@ -284,7 +286,7 @@ def roll_ally(ally_gender):
         him_her = 'them'
         his_hers = 'their'
         is_are = 'are'
-    ally_race = roll_race()
+    ally_race = roller(races)
     ally_position = {
         'Bounty Hunter':10,
         'Mage':10,
@@ -344,7 +346,7 @@ def roll_ally(ally_gender):
     al_meeting = al_meeting_tuple[0]
     al_relationship_tuple = roller(ally_relationship)
     al_relationship = al_relationship_tuple[0]
-    al_race = roller(races)
+    al_race = ally_race[0]
 
     al_fate_tuple = roller(ally_fate)
     al_fate = al_fate_tuple[0]

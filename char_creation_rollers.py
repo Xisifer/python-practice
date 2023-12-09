@@ -1,5 +1,6 @@
 from char_creation_menus import *
-
+from general_functions import *
+from char_save_data import *
 
 def roll(dictionary):
     # When provided with a dictionary consisting of Keys as strings adn Values as probabilities-out-of-100, roll according to probabilities and output the result.
@@ -120,37 +121,23 @@ def roll_parents(race_result):
             return char_mother_fate
 
 
-def roll_life_events(life_event_data):
-    # print(f'Incoming data is: {life_event_data}')
-    # race_result = life_event_data[0]
-    # char_age = life_event_data[1]
-    # life_milestones = life_event_data[2]
-    # life_events_num = len(life_milestones)
-
-    event = roll(life_event)
-    print(f'LIFE EVENT ROLL: {event}')
-    # retry = True
-    # while retry :
-    #     question_text = f'At age {life_age}...'
-    #     event_category = roll(life_event)
-        # event_category_index = event_category[1]
-        # event_category_result = event_category[0]
-    #     retry = ask_reroll(question_text, event_category_result) 
-    # if event_category_index == 0: # Fortune or Misfortune
-        # print('Fortune or Misfortune...')
-        # even_odd = flip()
-
-    return event
+def roll_life_events(data):
+    # print(f'Inside roll_life_events, incoming data is {data}')
+    event_result = roll(life_event)
+    # event_result_index = event_result[1]
+    # event = (event_result, event_result_index)
+    print(f'roll_life_events is exporting data: {event_result}')
+    return event_result
 
 
-def roll_fortune(string):
-    retry = True
-    while retry :
-        question_text = 'Fortune or Misfortune? '
-        even_odd = roll(fortune_misfortune)
-        even_odd_result = even_odd[0]
-        even_odd_index = even_odd[1]
-        retry = ask_reroll(question_text, even_odd_result) 
+def roll_fortune(race_result):
+    print('inside roll_fortune function...')
+    print('roll_fortune: running roll(fortune_misfortune)')
+
+    good_bad_roll = roll(fortune_misfortune)
+    print('roll_fortune: roll(fortune_misfortune) DONE')
+    print(f'Result: good_bad_roll = {good_bad_roll}')
+    return good_bad_roll
 
 
     if even_odd_index == 0: #Fortune
