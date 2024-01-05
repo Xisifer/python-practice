@@ -77,16 +77,16 @@ class ParentFactory:
 
 
     @staticmethod
-    def create_parent():
+    def create_parent(gender, race, age, job, biological):
         
         # For simplicity, we're assuming biological is always True in this example
         biological = True
-        return Parent(biological)
+        return Parent(gender, race, age, job, biological)
 
 # Example usage:
 # Create a few Parent instances to demonstrate the randomness
 for _ in range(5):
-    parent = ParentFactory.create_parent()
+    parent = ParentFactory.create_parent(gender, race, age, job, biological)
     print(f'Created a {parent.race} parent.')
 
 
