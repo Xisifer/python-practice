@@ -1,5 +1,9 @@
 import random
-
+from char_creation_menus import *
+from char_creation_rollers import *
+from general_functions import *
+from char_save_data import *
+from char_properties import *
 
 # Define an overall Character class
 
@@ -18,12 +22,35 @@ class Character:
         'Gnoll': 5
     }
     
-    def __init__(self, name, gender, race, age, job):
+    
+    def __init__(self, name=None, gender=None, race=None, age=None, job=None):
         self.name = name
         self.gender = gender
         self.race = race
         self.age = age
         self.job = job
+
+
+    def roll(dictionary):
+        # When provided with a dictionary consisting of Keys as strings adn Values as probabilities-out-of-100, roll according to probabilities and output the result.
+        rolled = random.choices(list(dictionary.keys()), weights=dictionary.values(), k=1)
+        rolled_string = rolled[0] # just the string of the result
+
+        dict_items = list(dictionary.items())
+        rolled_index = [id for id, key in enumerate(dict_items) if key[0] == rolled_string] # index of the result, used for conditionally targeting specific table results 
+        # [ex. favorite drink; if you roll Milk, stop; if you roll Soda, ask what kind]
+
+        # pack both string and index into a tuple for export
+        return (rolled_string, rolled_index[0])
+
+    def roll_race(stuff):
+        # from char_creation_menus import races
+        race_result = roll(races)
+        return race_result
+
+
+
+
 
 class Player(Character):
     def __init__(self, name, gender, race, age, job, origin, life_events):
@@ -31,10 +58,16 @@ class Player(Character):
         self.origin = origin  # Origin object
         self.life_events = life_events  # List of LifeEvent objects
     @staticmethod
-    def create_player():
-        # Randomly select race based on the defined probabilities
-        race = random.choices(list(ParentFactory.races.keys()), weights=ParentFactory.races.values(), k=1)[0]
+    def roll_race():
+        # # Randomly select race based on the defined probabilities
+        # race = random.choices(list(ParentFactory.races.keys()), weights=ParentFactory.races.values(), k=1)[0]
+        Player.race = Character.roll_race("potato")
         print(f'Created a {Player.race} player.')
+    
+
+Player.roll_race()
+
+
 
 class NPC(Character):
     pass
@@ -67,8 +100,8 @@ class Enemy(NPC):
 
 # Define the Parent class with a race property
 class Parent:
-    def __init__(self, name, gender, race, age, job, biological):
-        super().__init__(name, gender, race, age, job)
+    def __init__(self, name=None, gender=None, race=None, age=None, job=None, biological=True):
+        super().__init__()
         self.race = race
         self.biological = biological
 
@@ -77,16 +110,16 @@ class ParentFactory:
 
 
     @staticmethod
-    def create_parent(gender, race, age, job, biological):
+    def create_parent(gender=None, race='Human', age=None, job=None, biological=True):
         
         # For simplicity, we're assuming biological is always True in this example
-        biological = True
+        # biological = True
         return Parent(gender, race, age, job, biological)
 
 # Example usage:
 # Create a few Parent instances to demonstrate the randomness
 for _ in range(5):
-    parent = ParentFactory.create_parent(gender, race, age, job, biological)
+    parent = ParentFactory.create_parent()
     print(f'Created a {parent.race} parent.')
 
 

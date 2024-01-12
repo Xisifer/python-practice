@@ -20,7 +20,7 @@ def ask_reroll(question_text, roll_result):
 
 
 
-def char_question(q_text, roll_choice, insert_data): 
+def char_question(q_text=None, roll_choice=None, insert_data=None): 
 
 
 # ===============
