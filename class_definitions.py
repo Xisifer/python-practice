@@ -21,6 +21,12 @@ class Character:
         'Kobold': 10,
         'Gnoll': 5
     }
+    human_origins = {
+    'You are from Waterdeep, the City of Splendors.':40,
+    'You are from Baldur\'s Gate.':20,
+    'You are from Varisia, the Lands of Adventure':30,
+    'You are from the Mwangi Expanse, the dense jungle heartland.':10
+    }
     
     
     def __init__(self, name=None, gender=None, race=None, age=None, job=None):
@@ -50,22 +56,25 @@ class Character:
 
 
 
-
-
 class Player(Character):
-    def __init__(self, name, gender, race, age, job, origin, life_events):
+    def __init__(self, name=None, gender=None, race=None, age=None, job=None, origin=None, life_events=None):
         super().__init__(name, gender, race, age, job)
         self.origin = origin  # Origin object
         self.life_events = life_events  # List of LifeEvent objects
-    @staticmethod
-    def roll_race():
-        # # Randomly select race based on the defined probabilities
-        # race = random.choices(list(ParentFactory.races.keys()), weights=ParentFactory.races.values(), k=1)[0]
-        Player.race = Character.roll_race("potato")
-        print(f'Created a {Player.race} player.')
-    
 
-Player.roll_race()
+    def roll_attribute(self, attribute_dict):
+        rolled = random.choices(list(attribute_dict.keys()), weights=attribute_dict.values(), k=1)
+        rolled_item = rolled[0]
+        roled_index = list(attribute_dict.keys()).index(rolled_item)
+        return rolled_item, rolled_index
+    
+    def roll_race(self):
+        self.race, self.race_index = self._roll_attribute(Player.races)
+
+# Player.roll_race()
+player = Player()
+origin = Player.roll_attribute(human_origins)
+print(f'Race: {player.race}, Index: {player.race_index}', 'Origin: {origin}')
 
 
 
@@ -100,7 +109,7 @@ class Enemy(NPC):
 
 # Define the Parent class with a race property
 class Parent:
-    def __init__(self, name=None, gender=None, race=None, age=None, job=None, biological=True):
+    def __init__(self, gender=None, race=None, age=None, job=None, biological=True):
         super().__init__()
         self.race = race
         self.biological = biological
