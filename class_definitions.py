@@ -1,3 +1,8 @@
+
+
+# ========================================================================================================
+
+
 import random
 from char_creation_menus import *
 from char_creation_rollers import *
@@ -6,6 +11,7 @@ from char_save_data import *
 from char_properties import *
 
 # Define an overall Character class
+
 
 class Character:
     # Dictionary of races with their respective probability weights
@@ -27,6 +33,7 @@ class Character:
     'You are from Varisia, the Lands of Adventure':30,
     'You are from the Mwangi Expanse, the dense jungle heartland.':10
     }
+    
     
     
     def __init__(self, name=None, gender=None, race=None, age=None, job=None):
@@ -65,16 +72,18 @@ class Player(Character):
     def roll_attribute(self, attribute_dict):
         rolled = random.choices(list(attribute_dict.keys()), weights=attribute_dict.values(), k=1)
         rolled_item = rolled[0]
-        roled_index = list(attribute_dict.keys()).index(rolled_item)
+        rolled_index = list(attribute_dict.keys()).index(rolled_item)
         return rolled_item, rolled_index
     
     def roll_race(self):
-        self.race, self.race_index = self._roll_attribute(Player.races)
+        self.race, self.race_index = self.roll_attribute(self.races)
 
 # Player.roll_race()
 player = Player()
-origin = Player.roll_attribute(human_origins)
-print(f'Race: {player.race}, Index: {player.race_index}', 'Origin: {origin}')
+player.roll_race()
+origin, origin_index = player.roll_attribute(Player.human_origins)
+print(f'Creating a new player...')
+print(f'Race: {player.race}, Index: {player.race_index}, Origin: {origin}')
 
 
 
@@ -117,12 +126,12 @@ class Parent:
 # Define the ParentFactory class with a factory method to create Parent instances
 class ParentFactory:
 
-
     @staticmethod
     def create_parent(gender=None, race='Human', age=None, job=None, biological=True):
+        race = Player.race
+        if biological == True:
+            race = Character.roll_race
         
-        # For simplicity, we're assuming biological is always True in this example
-        # biological = True
         return Parent(gender, race, age, job, biological)
 
 # Example usage:
@@ -147,6 +156,11 @@ class Sibling:
 class LifeEvent:
     def __init__(self, age):
         self.age = age
+
+class EventFactory
+    @staticmethod
+    def create_event(): 
+        Player.roll_attribute
 
 class MeetEnemy(LifeEvent):
     pass
