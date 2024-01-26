@@ -9,6 +9,7 @@ from char_creation_rollers import *
 from general_functions import *
 from char_save_data import *
 from char_properties import *
+from class_enums import *
 
 # Define an overall Character class
 
@@ -33,15 +34,14 @@ class Character:
     'You are from Varisia, the Lands of Adventure':30,
     'You are from the Mwangi Expanse, the dense jungle heartland.':10
     }
-    
+
     
     
     def __init__(self, name=None, gender=None, race=None, age=None, job=None):
         self.name = name
-        self.gender = gender
-        self.race = race
+        self.gender = Gender.random()
+        self.race = Race.random()
         self.age = age
-        self.job = job
 
 
     def roll(dictionary):
@@ -66,6 +66,7 @@ class Character:
 class Player(Character):
     def __init__(self, name=None, gender=None, race=None, age=None, job=None, origin=None, life_events=None):
         super().__init__(name, gender, race, age, job)
+        self.race = race
         self.origin = origin  # Origin object
         self.life_events = life_events  # List of LifeEvent objects
 
@@ -78,24 +79,41 @@ class Player(Character):
     def roll_race(self):
         self.race, self.race_index = self.roll_attribute(self.races)
 
-# Player.roll_race()
-player = Player()
-player.roll_race()
-origin, origin_index = player.roll_attribute(Player.human_origins)
-print(f'Creating a new player...')
-print(f'Race: {player.race}, Index: {player.race_index}, Origin: {origin}')
+
 
 
 
 class NPC(Character):
-    pass
+    def __init__(self, name, gender, race, age, job, jobs, meeting_circumstance, friendship_level):
+        self.gender = Gender.random()
+        self.job = AllyClass.random()
 
 class Ally(NPC):
-    def __init__(self, name, gender, race, age, job, jobs, meeting_circumstance, friendship_level):
+    def __init__(self, name, gender, race, age, job, meeting_circumstance, friendship_level):
         super().__init__(name, gender, race, age, job)
-        self.jobs = jobs
-        self.meeting_circumstance = meeting_circumstance
+        self.gender = Gender.random()
+        self.jobs = AllyClass.random()
+        self.meeting_circumstance = AllyMeet.random()
         self.friendship_level = friendship_level
+        match self.gender:
+            case gender.MALE: 
+                he_she = 'he'
+                him_her = 'him'
+                his_hers = 'his'
+                is_are = 'is'
+            case gender.FEMALE:
+                he_she = 'she'
+                him_her = 'her'
+                his_hers = 'hers'
+                is_are = 'is'
+            case gender.NB:
+                he_she = 'they'
+                him_her = 'them'
+                his_hers = 'their'
+                is_are = 'are'
+
+
+
 
 class Enemy(NPC):
     def __init__(self, name, gender, race, age, job, positions, ex_friend, ex_lover, relative,
@@ -128,7 +146,7 @@ class ParentFactory:
 
     @staticmethod
     def create_parent(gender=None, race='Human', age=None, job=None, biological=True):
-        race = Player.race
+        # race = Player.race
         if biological == True:
             race = Character.roll_race
         
@@ -157,15 +175,26 @@ class LifeEvent:
     def __init__(self, age):
         self.age = age
 
-class EventFactory
+class EventFactory: 
     @staticmethod
     def create_event(): 
-        Player.roll_attribute
+        event_type = Player.roll_attribute(LifeEventType)
+        match event_type:
+            case LifeEventType.FORTUNE:
+                print(f'rolled fortune {event_type}')
+            case LifeEventType.MISFORTUNE:
+                print(f'rolled misfortune {event_type}')
+            case LifeEventType.ALLY: 
+                print(f'rolled ally {event_type}')
+            case LifeEventType.ENEMY: 
+                print(f'rolled enemy {event_type}')
+            case LifeEventType.ROMANCE:
+                print(f'rolled romance {event_type}')
 
 class MeetEnemy(LifeEvent):
     pass
 
-class MeetAlly(LifeEvent):
+class AllyMeet(LifeEvent):
     pass
 
 class Romance(LifeEvent):

@@ -16,6 +16,11 @@ class WeightedEnum(Enum):
         weights = [x.weight for x in all]
         return random.choices(all, weights)[0]
 
+class Gender(WeightedEnum):
+    MALE = ("Male", 45)
+    FEMALE = ("Female", 45)
+    NB = ("Nonbinary", 10)
+
 class Race(WeightedEnum):
     HUMAN = ("Human", 20)
     ELF = ("Elf", 10)
@@ -52,7 +57,27 @@ class SavageHomes(WeightedEnum):
     CAVE = ('Underground Caverns', 25)
 
 
+class LifeEventType(WeightedEnum):
+    FORTUNE = ('Fortunate Event', 20)
+    MISFORTUNE = ('Unfortunate Event', 20)
+    ALLY = ('Met an Ally', 20)
+    ENEMY = ('Made an Enemy', 20)
+    ROMANCE = ('Had a Romantic relationship', 20)
 
+
+
+class AllyClass(WeightedEnum):
+        BH = ('Bounty Hunter',10)
+        MAGE = ('Mage',10)
+        TEACHER = ('Mentor or Teacher',10)
+        FRIEND = ('Childhood Friend',10)
+        MERCHANT = ('Craftsman or Merchant',10)
+        ENEMY = ('Former Enemy',10)
+        NOBLE = ('Noble',10)
+        PEASANT = ('Peasant',10)
+        SOLDIER = ('Soldier',10)
+        BARD = ('Bard',10)
+    
 
 class Character:
     def __init__(self):

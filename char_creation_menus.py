@@ -259,7 +259,7 @@ allegiance = {
 # him_her
 # his_hers
 def roller(dictionary):
-    # When provided with a dictionary consisting of Keys as strings adn Values as probabilities-out-of-100, roll according to probabilities and output the result.
+    # When provided with a dictionary consisting of Keys as strings and Values as probabilities-out-of-100, roll according to probabilities and output the result.
     rolled = random.choices(list(dictionary.keys()), weights=dictionary.values(), k=1)
     rolled_string = rolled[0] # just the string of the result
 
