@@ -38,9 +38,9 @@ class Character:
     
     
     def __init__(self):
-        # self.name = name
+        self.name = "Steve"
         self.gender = Gender.random()
-        # self.race = Race.random()
+        self.race = Race.random()
         # self.age = age
 
 
@@ -62,13 +62,12 @@ class Character:
         return race_result
 
 # print(f'Character gender is {Character.gender}')
-char_dude = Character()
-print(f'char_dude gender is {char_dude.gender}')
+# char_dude = Character()
+# print(f'char_dude gender is {char_dude.gender}')
 
 class Player(Character):
     def __init__(self): # , name=None, gender=None, race=None, age=None, job=None, origin=None, life_events=None):
         super().__init__() # (name, race, age, job)
-        # self.race = race
         # self.origin = origin  # Origin object
         # self.life_events = life_events  # List of LifeEvent objects
 
@@ -83,8 +82,8 @@ class Player(Character):
 
 
 # print(f'Player gender is {Player.gender}')
-player_dude = Player()
-print(f'player_dude gender is {player_dude.gender}')
+# player_dude = Player()
+# print(f'player_dude gender is {player_dude.gender}')
 
 class NPC(Character):
     def __init__(self):
@@ -92,76 +91,133 @@ class NPC(Character):
         # self.gender = Gender.random()
 
 # print(f'NPC gender is {NPC.gender}')
-npc_dude = NPC()
-print(f'npc_dude gender is {npc_dude.gender}')
+# npc_dude = NPC()
+# print(f'npc_dude gender is {npc_dude.gender}')
 
 class Ally(NPC):
-    def __init__(self): #, name=None, gender=NPC.gender, race=None, age=None, job=None, meeting_circumstance=None, friendship_level=None):
+    def __init__(self, job=None): 
         super().__init__()
-        self.gender = gender
-        self.job = AllyClass.random()
-        self.meeting_circumstance = AllyMeet.random()
-        self.friendship_level = friendship_level
+        if not job:
+            self.job = AllyJob.random()
+        else:
+            self.job = job
 
+
+
+        # print(f'before match: Ally is {self.gender}')
         match self.gender:
-            case gender.MALE: 
-                he_she = 'he'
-                him_her = 'him'
-                his_hers = 'his'
-                is_are = 'is'
-            case gender.FEMALE:
-                he_she = 'she'
-                him_her = 'her'
-                his_hers = 'hers'
-                is_are = 'is'
-            case gender.NB:
-                he_she = 'they'
-                him_her = 'them'
-                his_hers = 'their'
-                is_are = 'are'
-# class AllyFactory: 
-#     def __init__(self,name,gender,race,job):
-#         self.name = name
-#         self.gender = gender
-#         self.race = race
-#         self.job = job
-#     @staticmethod
-#     def create_ally(name=None, gender=Ally.gender, race=Ally.race, job=Ally.job):
-#         return Ally(gender,race,job)
+            case Gender.MALE: 
+                # print(f'in match male: Ally is {self.gender}')
+                self.he_she = 'he'
+                self.him_her = 'him'
+                self.his_hers = 'his'
+                self.is_are = 'is'
+            case Gender.FEMALE:
+                # print(f'in match female: Ally is {self.gender}')
+                self.he_she = 'she'
+                self.him_her = 'her'
+                self.his_hers = 'hers'
+                self.is_are = 'is'
+            case Gender.NB:
+                # print(f'in match NB: Ally is {gender}')
+                self.he_she = 'they'
+                self.him_her = 'them'
+                self.his_hers = 'their'
+                self.is_are = 'are'
+                
+        self.meeting_circumstance = AllyMeeting.random()
+        print('=====================')
         
+        match self.meeting_circumstance:
+            case AllyMeeting.SAVED_THEM:
+                print(f'You saved {self.him_her} from something',10)
+            case AllyMeeting.SAVED_YOU:
+                print(f'{self.he_she} saved you from something'.capitalize())
+
+        self.friendship_level = AllyRelation.random()
+
+
+# def prettify(words, f):
+#     print('Are we pretty?')
+#     print(str(words).format(f))
+#     print('I\'m pretty!')
+
+
+# class AllyMeet(LifeEvent):
+#     ally_meeting = {
+#         f'You saved {Ally.him_her} from something':10,
+#         f'{Ally.he_she} saved you from something':10,
+#         f'you met {him_her} in a tavern':10,
+#         f'You fought together against something':10,
+#         f'You were trapped together somehow':10,
+#         f'You met while traveling':10,
+#         f'You hired {him_her} to do something':10,
+#         f'{he_she} hired you to do something':10,
+#         f'You fought against each other and came to mutual respect through combat':10,
+#         f'You were forced to work together':10
+#     }
+
+# llyMeeting(WeightedEnum):
+#     SAVED_THEM = (f'You saved them from something',10)
+#     SAVED_YOU = (f'They saved you from something',10)
+#     TAVERN = (f'you met them in a tavern',10)
+#     ALLIES = ('You fought together against something',10)
+#     TRAPPED = ('You were trapped together somehow',10)
+#     TRAVELING = ('You met while traveling',10)
+#     HIRED_THEM = ('You hired them to do something',10)
+#     HIRED_YOU = ('They hired you to do something',10)
+#     ENEMIES = ('You fought against each other and came to mutual respect through combat',10)
+#     RELUCTANT_ALLY = ('You
+
+
+
+
+
+
+
+
+
+
+
 # print(f'Ally gender is {Ally.gender}')
-ally_dude = Ally()
+ally_dude = Ally(AllyJob.PEASANT)
 print(f'Ally_dude gender is {ally_dude.gender}')
+print(f'======Ally pronoun is: {ally_dude.he_she}')
 
+
+contacts = []
 for _ in range(5):
-    contact1 = Ally()
-    print(f'Met a {contact1.gender} {contact1.race} person who is a {contact1.job}.')
+    contact = Ally()
+    contacts.append(contact)
+    print(f'Met a {contact.gender} {contact.race} person named {contact.name} who is a {contact.job}.')
 
-class Enemy(NPC):
-    def __init__(self, name, gender, race, age, job, positions, ex_friend, ex_lover, relative,
-                 childhood_enemy, cause_of_enmity, social_power, knowledge, physical_power, minions, magical_power):
-        super().__init__(name, gender, race, age, job)
-        self.positions = positions
-        self.ex_friend = ex_friend
-        self.ex_lover = ex_lover
-        self.relative = relative
-        self.childhood_enemy = childhood_enemy
-        self.cause_of_enmity = cause_of_enmity
-        self.social_power = social_power
-        self.knowledge = knowledge
-        self.physical_power = physical_power
-        self.minions = minions
-        self.magical_power = magical_power
+
+
+# class Enemy(NPC):
+#     def __init__(self, name, gender, race, age, job, positions, ex_friend, ex_lover, relative,
+#                  childhood_enemy, cause_of_enmity, social_power, knowledge, physical_power, minions, magical_power):
+#         super().__init__(name, gender, race, age, job)
+#         self.positions = positions
+#         self.ex_friend = ex_friend
+#         self.ex_lover = ex_lover
+#         self.relative = relative
+#         self.childhood_enemy = childhood_enemy
+#         self.cause_of_enmity = cause_of_enmity
+#         self.social_power = social_power
+#         self.knowledge = knowledge
+#         self.physical_power = physical_power
+#         self.minions = minions
+#         self.magical_power = magical_power
 
 
 
 
 # Define the Parent class with a race property
-class Parent:
-    def __init__(self, gender=None, race=None, age=None, job=None, biological=True):
+class Parent(Character):
+    def __init__(self):
         super().__init__()
-        self.race = race
-        self.biological = biological
+        # self.race = race
+        self.biological = True
 
 # Define the ParentFactory class with a factory method to create Parent instances
 class ParentFactory:
@@ -172,12 +228,12 @@ class ParentFactory:
         if biological == True:
             race = Character.roll_race
         
-        return Parent(gender, race, age, job, biological)
+        return 
 
 # Example usage:
 # Create a few Parent instances to demonstrate the randomness
 for _ in range(5):
-    parent = ParentFactory.create_parent()
+    parent = Parent()
     print(f'Created a {parent.race} parent.')
 
 
@@ -195,45 +251,26 @@ class Sibling:
 
 class LifeEvent:
     def __init__(self, age):
-        self.age = age
-
-class EventFactory: 
-    @staticmethod
-    def create_event(): 
-        event_type = Player.roll_attribute(LifeEventType)
-        match event_type:
+        self.age = age       
+        self.event_type = LifeEventType.random()
+        match self.self.event_type:
             case LifeEventType.FORTUNE:
-                print(f'rolled fortune {event_type}')
+                print(f'rolled fortune {self.event_type}')
             case LifeEventType.MISFORTUNE:
-                print(f'rolled misfortune {event_type}')
+                print(f'rolled misfortune {self.event_type}')
             case LifeEventType.ALLY: 
-                print(f'rolled ally {event_type}')
+                print(f'rolled ally {self.event_type}')
             case LifeEventType.ENEMY: 
-                print(f'rolled enemy {event_type}')
+                print(f'rolled enemy {self.event_type}')
             case LifeEventType.ROMANCE:
-                print(f'rolled romance {event_type}')
+                print(f'rolled romance {self.event_type}')
 
-for _ in range(5):
-    event = EventFactory.create_event()
-    print(f'Created a {event.event_type} event.')
 
 
 class MeetEnemy(LifeEvent):
     pass
 
-class AllyMeet(LifeEvent):
-    ally_meeting = {
-        f'You saved {him_her} from something':10,
-        f'{he_she} saved you from something':10,
-        f'you met {him_her} in a tavern':10,
-        f'You fought together against something':10,
-        f'You were trapped together somehow':10,
-        f'You met while traveling':10,
-        f'You hired {him_her} to do something':10,
-        f'{he_she} hired you to do something':10,
-        f'You fought against each other and came to mutual respect through combat':10,
-        f'You were forced to work together':10
-    }
+
 
 class Romance(LifeEvent):
     def __init__(self, age, tragedy, problematic, happy):

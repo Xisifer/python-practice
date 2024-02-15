@@ -17,3 +17,4 @@ print(f'Race: {player.race}, Index: {player.race_index}, Origin: {origin}')
 for _ in range(5):
     event = EventFactory.create_event()
     print(f'Created a {event.event_type} event.')
+
