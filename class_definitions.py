@@ -124,38 +124,64 @@ class Ally(NPC):
                 self.him_her = 'them'
                 self.his_hers = 'their'
                 self.is_are = 'are'
-                
-        self.meeting_circumstance = AllyMeeting.random()
         print('=====================')
+        print(f'In your travels, you met {self.name}, a {self.gender} {self.job}.')
+
+
+        self.meeting_circumstance = AllyMeeting.random()
+
         
         match self.meeting_circumstance:
             case AllyMeeting.SAVED_THEM:
-                print(f'You saved {self.him_her} from something',10)
+                print(f'You saved {self.him_her} from something')
             case AllyMeeting.SAVED_YOU:
                 print(f'{self.he_she} saved you from something'.capitalize())
+            case AllyMeeting.TAVERN:
+                print(f'You met {self.him_her} in a tavern and were drinking buddies')
+            case AllyMeeting.ALLIES:
+                print(f'You fought together against something')
+            case AllyMeeting.TRAPPED:
+                print(f'You were both trapped in a dangerous situation and had to cooperate to survive.')
+            case AllyMeeting.TRAVELING:
+                print(f'You met {self.him_her} while traveling.')
+            case AllyMeeting.HIRED_THEM:
+                print(f'You hired {self.him_her} to do something for you.')
+            case AllyMeeting.HIRED_YOU:
+                print(f'{self.he_she} hired you to do something for {self.him_her}'.capitalize())
+            case AllyMeeting.ENEMIES:
+                print(f'You fought against each other and came to mutual respect through battle. Decide with your GM who won the encounter.')
+            case AllyMeeting.RELUCTANT_ALLY:
+                print(f'You were once reluctantly forced to work together with {self.him_her} against a common foe.')
 
+
+        print('Over the time, the two of you became..... ')
         self.friendship_level = AllyRelation.random()
+        match self.friendship_level:
+            case AllyRelation.ACQUAINTANCE:
+                print('just casual acquaintances')
+            case AllyRelation.FRIEND:
+                print('Friends')
+            case AllyRelation.CLOSE_FRIEND:
+                print('Close friends')
+            case AllyRelation.INSEPERABLE:
+                print('Totally inseperable')
+            case AllyRelation.SWORN:
+                print('Sworn blood bond companions')
+        
+        print(f'Today, {self.he_she} lives in...')
+        self.location = AllyLocation.random()
+        match self.location:
+            case AllyLocation.TOWN:
+                print(f'a nearby town')
+            case AllyLocation.CAPITOL:
+                print(f'the country\'s grand capitol')
+            case AllyLocation.VILLAGE:
+                print(f'a peaceful village in the countryside')
+            case AllyLocation.HUT:
+                print(f'a small hut in the middle of nowhere')
+        print('=====================')
 
 
-# def prettify(words, f):
-#     print('Are we pretty?')
-#     print(str(words).format(f))
-#     print('I\'m pretty!')
-
-
-# class AllyMeet(LifeEvent):
-#     ally_meeting = {
-#         f'You saved {Ally.him_her} from something':10,
-#         f'{Ally.he_she} saved you from something':10,
-#         f'you met {him_her} in a tavern':10,
-#         f'You fought together against something':10,
-#         f'You were trapped together somehow':10,
-#         f'You met while traveling':10,
-#         f'You hired {him_her} to do something':10,
-#         f'{he_she} hired you to do something':10,
-#         f'You fought against each other and came to mutual respect through combat':10,
-#         f'You were forced to work together':10
-#     }
 
 # llyMeeting(WeightedEnum):
 #     SAVED_THEM = (f'You saved them from something',10)
@@ -180,16 +206,16 @@ class Ally(NPC):
 
 
 # print(f'Ally gender is {Ally.gender}')
-ally_dude = Ally(AllyJob.PEASANT)
-print(f'Ally_dude gender is {ally_dude.gender}')
-print(f'======Ally pronoun is: {ally_dude.he_she}')
+# ally_dude = Ally(AllyJob.PEASANT)
+# print(f'Ally_dude gender is {ally_dude.gender}')
+# print(f'======Ally pronoun is: {ally_dude.he_she}')
 
 
 contacts = []
 for _ in range(5):
     contact = Ally()
     contacts.append(contact)
-    print(f'Met a {contact.gender} {contact.race} person named {contact.name} who is a {contact.job}.')
+    # print(f'Met a {contact.gender} {contact.race} person named {contact.name} who is a {contact.job}.')
 
 
 
