@@ -1,0 +1,4 @@
+
+class MeetEnemy(LifeEvent):
+    pass
+

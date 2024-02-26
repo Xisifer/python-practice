@@ -1,9 +1,6 @@
-from char_creation_menus import *
-from char_creation_rollers import *
-from general_functions import *
-from char_save_data import *
-from char_properties import *
-from class_definitions import *
+from dnd import __char_data__
+from dnd import __event_data__
+
 
 char_question("Select race: ", )
 

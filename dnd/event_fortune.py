@@ -1,0 +1,2 @@
+class Fortune(LifeEvent):
+    pass
