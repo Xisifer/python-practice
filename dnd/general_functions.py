@@ -1,77 +1,27 @@
 import inquirer
 import random
-from char_properties import Character
-from char_save_data import *
+# from char_properties import Character
 
-def ask_reroll(question_text, roll_result):
-    choice_menu = {
-        inquirer.List('menu',
-                    message=f'{question_text} {roll_result}',
-                    choices=['Accept', 'Reroll'], default=['Accept']
-        )
-    }
-    answer = inquirer.prompt(choice_menu)
+# from char_save_data import *
 
-    if answer['menu'] == 'Reroll':
-        return True
-    else:
-        return False
+
     
 
 
 
-def char_question(q_text=None, roll_choice=None, insert_data=None): 
+# def char_question(q_text=None, roll_choice=None, insert_data=None): 
 
-
-# ===============
-# TUPLE CHECKER
-# ===============
-
-    # print(f'Is {insert_data} a tuple?')
-    # if type(insert_data) is tuple:
-    #     print('Yes!')
-    #     print(f'The tuple is {len(insert_data)} items long.')
-    #     # i=0
-    #     # while i < len(insert_data):
-    #     #     print(insert_data[i])
-    #     #     i=i+1
-    #     print(f'first data of tuple {insert_data} is {insert_data[0]}.')
-    #     print(f'second data of tuple {insert_data} is {insert_data[1]}.')
-    #     insert_data = insert_data[0]
-    #     print(f'insert_data is now: {insert_data}')
-    # else:
-    #     print('No.')
-    #     insert_data = insert_data
-
-    # print(f'Is {roll_choice} a tuple?')
-
-    # if type(roll_choice) is tuple:
-    #     print('Yes!')
-    #     print(f'The tuple is {len(roll_choice)} items long.')
-    #     i=0
-    #     while i < len(roll_choice):
-    #         print(roll_choice[i])
-    #         i=i+1
-    #     print(f'first data of tuple {roll_choice} is {roll_choice[0]}.')
-    #     roll_choice = roll_choice[0]
-    # else:
-    #     print('No.')
-    #     roll_choice = roll_choice
-
-
-
-
-    retry = True
-    while retry :
-        question_text = q_text
-        question_result_tuple = roll_choice(insert_data)
-        print(f'question_result_tuple is: {question_result_tuple}')
-        question_result = question_result_tuple[0]
-        print(f'question_result_tuple[0] is: {question_result_tuple[0]}')
-        retry = ask_reroll(question_text, question_result)
-        print(f'Returning full tuple of roll result: {question_result_tuple}')
+#     retry = True
+#     while retry :
+#         question_text = q_text
+#         question_result_tuple = roll_choice(insert_data)
+#         print(f'question_result_tuple is: {question_result_tuple}')
+#         question_result = question_result_tuple[0]
+#         print(f'question_result_tuple[0] is: {question_result_tuple[0]}')
+#         retry = ask_reroll(question_text, question_result)
+#         print(f'Returning full tuple of roll result: {question_result_tuple}')
     
-    return question_result_tuple
+#     return question_result_tuple
 
 
 
@@ -138,3 +88,47 @@ def name_input():
 #     insert_data = insert_data[0]
 # else:
 #     insert_data = insert_data
+
+
+
+
+
+
+
+
+
+# 
+# ===============
+# TUPLE CHECKER
+# ===============
+
+    # print(f'Is {insert_data} a tuple?')
+    # if type(insert_data) is tuple:
+    #     print('Yes!')
+    #     print(f'The tuple is {len(insert_data)} items long.')
+    #     # i=0
+    #     # while i < len(insert_data):
+    #     #     print(insert_data[i])
+    #     #     i=i+1
+    #     print(f'first data of tuple {insert_data} is {insert_data[0]}.')
+    #     print(f'second data of tuple {insert_data} is {insert_data[1]}.')
+    #     insert_data = insert_data[0]
+    #     print(f'insert_data is now: {insert_data}')
+    # else:
+    #     print('No.')
+    #     insert_data = insert_data
+
+    # print(f'Is {roll_choice} a tuple?')
+
+    # if type(roll_choice) is tuple:
+    #     print('Yes!')
+    #     print(f'The tuple is {len(roll_choice)} items long.')
+    #     i=0
+    #     while i < len(roll_choice):
+    #         print(roll_choice[i])
+    #         i=i+1
+    #     print(f'first data of tuple {roll_choice} is {roll_choice[0]}.')
+    #     roll_choice = roll_choice[0]
+    # else:
+    #     print('No.')
+    #     roll_choice = roll_choice

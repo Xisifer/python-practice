@@ -1,3 +1,6 @@
+from class_enums import WeightedEnum
+
+
 class AllyJob(WeightedEnum):
     BH = ('Bounty Hunter',10)
     MAGE = ('Mage',10)

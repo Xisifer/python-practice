@@ -1,3 +1,5 @@
+from dnd.class_enums import WeightedEnum
+
 class LifeEventType(WeightedEnum):
     FORTUNE = ('Fortunate Event', 20)
     MISFORTUNE = ('Unfortunate Event', 20)

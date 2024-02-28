@@ -1,3 +1,5 @@
+from class_enums import WeightedEnum
+
 class AllyMeeting(WeightedEnum):
     SAVED_THEM = ('You saved {} from something',10)
     SAVED_YOU = ('{} saved you from something',10)

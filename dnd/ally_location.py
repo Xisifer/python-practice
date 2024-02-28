@@ -1,3 +1,5 @@
+from class_enums import WeightedEnum
+
 class AllyLocation(WeightedEnum):
     TOWN = ('a nearby town',30)
     CAPITOL = ('the country\'s grand capitol',30)

@@ -1,3 +1,5 @@
+from class_enums import WeightedEnum
+
 class AllyFate(WeightedEnum):
     ('{he_she} {is_are} gone in a far-off land',30)
     ('{he_she} {is_are} frequently somewhere nearby when you least expect {him_her}',25)

@@ -1,3 +1,5 @@
+from class_enums import WeightedEnum
+
 class SavageHomes(WeightedEnum):
     BADLANDS = ('Badlands', 25)
     SWAMP = ('Swamps', 15)

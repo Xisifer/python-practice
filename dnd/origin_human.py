@@ -1,3 +1,5 @@
+from class_enums import WeightedEnum
+
 class HumanOrigins(WeightedEnum):
     WATERDEEP = ("Waterdeep, the City of Splendors", 40)
     BALDUR = ("Baldur's Gate", 20)

@@ -1,3 +1,5 @@
+from dnd.class_enums import WeightedEnum
+
 class Race(WeightedEnum):
     HUMAN = ("Human", 20)
     ELF = ("Elf", 10)
