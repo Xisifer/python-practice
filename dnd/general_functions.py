@@ -34,10 +34,19 @@ def flip():
 
 
 
-def name_input():
-    char_name = input("Do you want to roll dice? Y/N ")
-    name_stripped = str(char_name.strip())
-    print(f'You said: {name_stripped}')
+
+
+# def roll(dictionary):
+#     # When provided with a dictionary consisting of Keys as strings adn Values as probabilities-out-of-100, roll according to probabilities and output the result.
+#     rolled = random.choices(list(dictionary.keys()), weights=dictionary.values(), k=1)
+#     rolled_string = rolled[0] # just the string of the result
+
+#     dict_items = list(dictionary.items())
+#     rolled_index = [id for id, key in enumerate(dict_items) if key[0] == rolled_string] # index of the result, used for conditionally targeting specific table results 
+#     # [ex. favorite drink; if you roll Milk, stop; if you roll Soda, ask what kind]
+
+#     # pack both string and index into a tuple for export
+#     return (rolled_string, rolled_index[0])
 
 # def bare_text(string):
 #     print(f'bare string is {string}')

@@ -1,13 +1,22 @@
-# from dnd.general_functions import *
-
-# from dnd import char_data
+import json
 import inquirer
 from dnd.player_class import Player
 from dnd.life_events import LifeEvent
 from dnd.character_class import Character
 from dnd.race import Race
-from dnd.origin_human import HumanOrigins
-from dnd.
+from dnd.childhood import Childhood
+from dnd.origin_human import HumanOrigins, HumanFlavor, HumanHomes
+from dnd.origin_fey import FeyOrigins, FeyFlavor, FeyHomes
+from dnd.origin_savage import SavageOrigins, SavageFlavor, SavageHomes
+from dnd.parents import ParentsStatus
+
+
+def name_input():
+    char_name = input("Character name: ")
+    name_stripped = str(char_name.strip())
+    return name_stripped
+
+
 
 def ask_reroll(question_text, roll_result):
     choice_menu = {
@@ -19,20 +28,71 @@ def ask_reroll(question_text, roll_result):
     answer = inquirer.prompt(choice_menu)
 
     if answer['menu'] == 'Reroll':
-        print('Rerolling...')
         return True
     else:
         return False
 
-
-rolled_race = Race.random()
-does_player_reroll = ask_reroll("Select race: ", rolled_race)
-while does_player_reroll == True:
-    print('Reroll!')
-    rolled_race = Race.random()
-    does_player_reroll = ask_reroll('Select race: ', rolled_race)
-print(f'Accepted player race is {rolled_race}')
-
+def creator_question(question_text, attribute):
+    rolled_result = attribute.random()
+    does_player_reroll = ask_reroll(question_text, rolled_result)
+    while does_player_reroll == True:
+        rolled_result = attribute.random()
+        does_player_reroll = ask_reroll(question_text, rolled_result)
+    return rolled_result
 
 
-player_background = HumanOrigins.random()
+
+
+
+def creator_question(question_text, attribute):
+    rolled_result = attribute.random()
+    does_player_reroll = ask_reroll(question_text, rolled_result)
+    while does_player_reroll == True:
+        rolled_result = attribute.random()
+        does_player_reroll = ask_reroll(question_text, rolled_result)
+    return rolled_result
+
+
+
+
+player_char = Character()
+
+player_char.name = name_input()
+
+player_char.race = creator_question('Select race: ', Race)
+
+player_char.bg_childhood = creator_question('Your origin: ', Childhood)
+
+match player_char.race:
+    case Race.HUMAN:
+        player_char.bg_homeland = creator_question('You hail from ', HumanHomes)
+        player_char.bg_origin = creator_question('You were raised in ', HumanOrigins)
+        player_char.bg_flavor = creator_question('As you were growing up, ', HumanFlavor)
+
+
+    case Race.ELF | Race.HALFLING | Race.GNOME:
+        player_char.bg_homeland = creator_question('You hail from ', FeyHomes)
+        player_char.bg_origin = creator_question('You were raised in ', FeyOrigins)
+        player_char.bg_flavor = creator_question('As you were growing up, ', FeyFlavor)
+    
+    case Race.DRAGONBORN | Race.ORC | Race.GOBLIN | Race.KOBOLD | Race.GNOLL:
+        player_char.bg_homeland = creator_question('You hail from ', SavageHomes)
+        player_char.bg_origin = creator_question('You were raised in ', SavageOrigins)
+        player_char.bg_flavor = creator_question('As you were growing up, ', SavageFlavor)
+
+    case _:
+        print('ERROR')
+
+
+# Player family is composed of 0 - 2 parents and 0 - 3 siblings
+# Family fate
+
+match player_char.bg_childhood:
+    case Childhood.NUCLEAR:
+        player_char.parents = creator_question('Status of your parents: ', ParentsStatus)
+        match player_char.parents:
+            case ParentsStatus.ALIVE:
+                print('Lucky you!')
+                pass
+            case ParentsStatus.INCIDENT:
+                print('Something happened.')
