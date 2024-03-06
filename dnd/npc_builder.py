@@ -2,14 +2,7 @@ from dnd.class_enums import WeightedEnum
 from dnd.gender import Gender
 from dnd.jobs_menu import PlayerJob, AllyJob, NPCJob
 
-class Character():
-
-
-    def __init__(self):
-        self.hair = 'brown'
-        # self.name = char_name  
-        self.gender = Gender.random()
-        # self.age = age
+class NPC(WeightedEnum):
 
     # ===OUTLINE==
         # A character consists of:
@@ -26,7 +19,17 @@ class Character():
             # Ally: Meeting circumstance
             # Enemy: Cause of aggression
             # Current Fate: Seeking the player? Hunting the player? Adventuring with the player? Dead?
-              
+        
+
+    def __init__(self):
+        self.name = char_name
+
+
+    @staticmethod
+    def create_parent(gender=None, race='Human', age=None, job=None, biological=True):
+        # race = Player.race
+        if biological == True:
+            race = Character.roll_race
 
 
 # def roll_ally(ally_gender): 

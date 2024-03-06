@@ -1,5 +1,5 @@
-import json
 import inquirer
+import random
 from dnd.player_class import Player
 from dnd.life_events import LifeEvent
 from dnd.character_class import Character
@@ -8,7 +8,9 @@ from dnd.childhood import Childhood
 from dnd.origin_human import HumanOrigins, HumanFlavor, HumanHomes
 from dnd.origin_fey import FeyOrigins, FeyFlavor, FeyHomes
 from dnd.origin_savage import SavageOrigins, SavageFlavor, SavageHomes
-from dnd.parents import ParentsStatus
+from dnd.parents_status import ParentsStatus
+from dnd.parent_class import Parent
+from dnd.jobs_menu import PlayerJob, NPCJob, AllyJob
 
 
 def name_input():
@@ -42,19 +44,6 @@ def creator_question(question_text, attribute):
 
 
 
-
-
-def creator_question(question_text, attribute):
-    rolled_result = attribute.random()
-    does_player_reroll = ask_reroll(question_text, rolled_result)
-    while does_player_reroll == True:
-        rolled_result = attribute.random()
-        does_player_reroll = ask_reroll(question_text, rolled_result)
-    return rolled_result
-
-
-
-
 player_char = Character()
 
 player_char.name = name_input()
@@ -85,14 +74,35 @@ match player_char.race:
 
 
 # Player family is composed of 0 - 2 parents and 0 - 3 siblings
+player_char.parent_count = random.randint(1,2)
+print(f'You were raised by {player_char.parent_count} parents.')
 # Family fate
 
 match player_char.bg_childhood:
-    case Childhood.NUCLEAR:
-        player_char.parents = creator_question('Status of your parents: ', ParentsStatus)
-        match player_char.parents:
-            case ParentsStatus.ALIVE:
-                print('Lucky you!')
-                pass
-            case ParentsStatus.INCIDENT:
-                print('Something happened.')
+    
+    case Childhood.BORN:
+        if player_char.parent_count == 1:
+            pc_mother = Parent(gender='Female', race=player_char.race, job=NPCJob.random())
+            print(f'Your mother is a {pc_parent.gender} {pc_parent.race} {pc_parent.job}.')
+        else:
+            pc_mother = Parent(gender='Female', race=player_char.race, job=NPCJob.random())
+            pc_parent = Parent(gender='Male', race=player_char.race, job=NPCJob.random())
+
+
+    case Childhood.ADOPTED:
+        print('You were adopted.')
+
+        pc_parent = Parent(gender='Male', race=Race.random(), job=NPCJob.random())
+
+        print(f'Your adoptive parent is a {pc_parent.gender} {pc_parent.race} {pc_parent.job}.')
+
+        
+
+player_char.parents = creator_question('Status of your parents: ', ParentsStatus)
+
+match player_char.parents_status:
+    case ParentsStatus.ALIVE:
+        print('Lucky you!')
+        pass
+    case ParentsStatus.INCIDENT:
+        print('Something happened to your parents.')

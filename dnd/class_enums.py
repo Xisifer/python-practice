@@ -3,7 +3,7 @@ from enum import Enum
 import random
 
 class WeightedEnum(Enum):
-    def __init__(self, str, weight):
+    def __init__(self, str, weight=1):
         self.str = str
         self.weight = weight
 

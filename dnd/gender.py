@@ -1,4 +1,4 @@
-from class_enums import WeightedEnum
+from dnd.class_enums import WeightedEnum
 
 class Gender(WeightedEnum):
     MALE = ("Male", 45)
