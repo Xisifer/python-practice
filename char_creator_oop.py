@@ -81,11 +81,6 @@ player_char.bg_childhood = creator_question('Your origin: ', Childhood)
 
 
 
-
-
-
-# Family fate
-
 # By default, every character has a birth mother
 pc_parent1 = Parent()
 pc_parent1.gender = Gender.FEMALE
@@ -98,47 +93,13 @@ pc_parent2.job = NPCJob.random()
 
 
 
-pc_parent1 = random.choice([None, pc_parent1])
-pc_parent2 = random.choice([None, pc_parent2])
+# pc_parent1 = random.choice([None, pc_parent1])
+# pc_parent2 = random.choice([None, pc_parent2])
 
 
-
-
-if pc_parent1.gender == Gender.FEMALE:
-    mom_dad = 'mother'
-elif pc_parent1.gender == Gender.MALE:
-    mom_dad = 'father'
-else:
-    mom_dad = 'parent'
-
-
-    print(f'Your {mom_dad} is a {pc_parent1.race} {pc_parent1.job}.')
-
-
-
-    pc_parent1 = Parent()
-    pc_parent1.gender = Gender.FEMALE
-    pc_parent1.race = player_char.race
-
-
-
-
-
-
-
-
-print(f"You are a {player_char.race}.")
-
+print(f'Player race is {player_char.race}')
 
 match player_char.bg_childhood:
-
-
-    case Childhood.ADOPTED:
-        print('You were adopted.')
-        pc_parent1 = Character()
-        pc_parent2 = random.choice([None, Character()])
-
-        print(f'Your adoptive parent is a {pc_parent1.gender} {pc_parent1.race} {pc_parent1.job}.')
 
     case Childhood.ORPHAN:
         print('You are an orphan.')
