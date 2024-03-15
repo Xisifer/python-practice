@@ -4,7 +4,7 @@ from dnd.player_class import Player
 from dnd.life_events import LifeEvent
 from dnd.character_class import Character
 from dnd.race import Race
-from dnd.childhood import Childhood
+from dnd.childhood import Birth, Childhood
 from dnd.origin_human import HumanOrigins, HumanFlavor, HumanHomes
 from dnd.origin_fey import FeyOrigins, FeyFlavor, FeyHomes
 from dnd.origin_savage import SavageOrigins, SavageFlavor, SavageHomes
@@ -50,7 +50,7 @@ player_char = Character()
 
 player_char.race = creator_question('Select race: ', Race)
 
-player_char.bg_childhood = creator_question('Your origin: ', Childhood)
+# player_char.bg_childhood = creator_question('Your origin: ', Childhood)
 
 # match player_char.race:
 #     case Race.HUMAN:
@@ -80,6 +80,8 @@ player_char.bg_childhood = creator_question('Your origin: ', Childhood)
 # Both parents, single parent, orphan?
 
 
+player_char.bg_birth = Childhood.random()
+
 
 # By default, every character has a birth mother
 pc_parent1 = Parent()
@@ -89,35 +91,43 @@ pc_parent1.job = NPCJob.random()
 # Second parent defaults to Father, but this can change
 pc_parent2 = Parent()
 pc_parent2.gender = Gender.MALE
+
 pc_parent2.job = NPCJob.random()
 
+pc_childhood = ''
 
+match player_char.bg_birth:
 
-# pc_parent1 = random.choice([None, pc_parent1])
-# pc_parent2 = random.choice([None, pc_parent2])
-
-
-print(f'Player race is {player_char.race}')
-
-match player_char.bg_childhood:
-
-    case Childhood.ORPHAN:
+    case Birth.ORPHAN:
         print('You are an orphan.')
+        pc_parent1 = None
+        pc_childhood += 'You are an orphan.'
             
     case _:
+        pc_parent1 = random.choice([None, pc_parent1])
+        pc_parent2 = random.choice([None, pc_parent2])
         num_parents = bool(pc_parent1) + bool(pc_parent2)
-        print("You were {} {} parent{}.".format(
-            "adopted by" if Childhood.ADOPTED else "born to",
+
+
+        pc_childhood += "You were {} {} parent{}.".format(
+            "adopted by" if Birth.ADOPTED else "born to",
             num_parents,
-            "s" if num_parents > 1 else ""))
+            "s" if num_parents > 1 else "")
+        
+
 
 for parent in pc_parent1, pc_parent2:
     if parent:
-        print("Your {} is a {}.".format(
+        pc_childhood += "Your {} is a {}.".format(
             "mother" if parent.gender == Gender.FEMALE else "father",
-            parent.race))
+            parent.race)
 
+# pc_growup = pc_childhood.append(Childhood.growup)
+# print(pc_growup)
   
+# player_char.childhood = ask_reroll(pc_childhood, Childhood)
+
+
 
 # player_char.parents = creator_question('Status of your parents: ', ParentsStatus)
 
