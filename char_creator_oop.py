@@ -78,11 +78,6 @@ player_char.race = creator_question('Select race: ', Race)
 
 
 # Both parents, single parent, orphan?
-
-
-player_char.bg_birth = Childhood.random()
-
-
 # By default, every character has a birth mother
 pc_parent1 = Parent()
 pc_parent1.gender = Gender.FEMALE
@@ -91,17 +86,31 @@ pc_parent1.job = NPCJob.random()
 # Second parent defaults to Father, but this can change
 pc_parent2 = Parent()
 pc_parent2.gender = Gender.MALE
-
+pc_parent2.race = player_char.race
 pc_parent2.job = NPCJob.random()
 
+
+# pc_childhood starts empty
 pc_childhood = ''
 
+player_char.bg_birth = Birth.random()
+
+print(f'player_char.bg_birth is: {str(player_char.bg_birth)}')
+
+
+for parent in pc_parent1, pc_parent2:
+    if parent:
+        pc_childhood += "Your {} is a {} {}. ".format(
+            "mother" if parent.gender == Gender.FEMALE else "father",
+            parent.race, parent.job)
+
+# pc_childhood now has parents info
 match player_char.bg_birth:
 
     case Birth.ORPHAN:
-        print('You are an orphan.')
         pc_parent1 = None
         pc_childhood += 'You are an orphan.'
+
             
     case _:
         pc_parent1 = random.choice([None, pc_parent1])
@@ -115,12 +124,41 @@ match player_char.bg_birth:
             "s" if num_parents > 1 else "")
         
 
+def reroll_childhood(childhood):
+    print(childhood)
 
-for parent in pc_parent1, pc_parent2:
-    if parent:
-        pc_childhood += "Your {} is a {}.".format(
-            "mother" if parent.gender == Gender.FEMALE else "father",
-            parent.race)
+def randomizer_reroll(question_text):
+    choice_menu = {
+        inquirer.List('menu',
+                    message=f'{question_text}',
+                    choices=['Accept', 'Reroll'], default=['Accept']
+        )
+    }
+    answer = inquirer.prompt(choice_menu)
+
+    if answer['menu'] == 'Reroll':
+        return True
+    else:
+        return False
+
+def randomizer_question(question_text):
+    result = reroll_childhood(question_text)
+    does_player_reroll = randomizer_reroll(question_text)
+    while does_player_reroll == True:
+        result = reroll_childhood(question_text)
+        does_player_reroll = randomizer_reroll(question_text)
+    return result
+
+
+
+print(f'pc_childhood is {pc_childhood}')
+reroll_childhood(pc_childhood)
+print('Rerolling...')
+print(f'pc_childhood is now {pc_childhood}')
+
+
+randomizer_question(pc_childhood)
+
 
 # pc_growup = pc_childhood.append(Childhood.growup)
 # print(pc_growup)
