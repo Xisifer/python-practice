@@ -75,57 +75,85 @@ player_char.race = creator_question('Select race: ', Race)
 
 # ===================================================
 # Parents and Family
-
-
-# Both parents, single parent, orphan?
-# By default, every character has a birth mother
-pc_parent1 = Parent()
-pc_parent1.gender = Gender.FEMALE
-pc_parent1.race = player_char.race
-pc_parent1.job = NPCJob.random()
-# Second parent defaults to Father, but this can change
-pc_parent2 = Parent()
-pc_parent2.gender = Gender.MALE
-pc_parent2.race = player_char.race
-pc_parent2.job = NPCJob.random()
-
-
 # pc_childhood starts empty
 pc_childhood = ''
-
-player_char.bg_birth = Birth.random()
-
-print(f'player_char.bg_birth is: {str(player_char.bg_birth)}')
-
-
-for parent in pc_parent1, pc_parent2:
-    if parent:
-        pc_childhood += "Your {} is a {} {}. ".format(
-            "mother" if parent.gender == Gender.FEMALE else "father",
-            parent.race, parent.job)
-
-# pc_childhood now has parents info
-match player_char.bg_birth:
-
-    case Birth.ORPHAN:
-        pc_parent1 = None
-        pc_childhood += 'You are an orphan.'
-
-            
-    case _:
-        pc_parent1 = random.choice([None, pc_parent1])
-        pc_parent2 = random.choice([None, pc_parent2])
-        num_parents = bool(pc_parent1) + bool(pc_parent2)
+def generate_parents(pc_childhood):
+    print('Generating parents...')
+    # Both parents, single parent, orphan?
+    # By default, every character has a birth mother
+    pc_parent1 = Parent()
+    pc_parent1.gender = Gender.FEMALE
+    pc_parent1.race = player_char.race
+    pc_parent1.job = NPCJob.random()
+    # Second parent defaults to Father, but this can change
+    pc_parent2 = Parent()
+    pc_parent2.gender = Gender.MALE
+    pc_parent2.race = player_char.race
+    pc_parent2.job = NPCJob.random()
 
 
-        pc_childhood += "You were {} {} parent{}.".format(
-            "adopted by" if Birth.ADOPTED else "born to",
-            num_parents,
-            "s" if num_parents > 1 else "")
-        
+
+    player_char.bg_birth = Birth.random()
+
+
+
+
+    # pc_childhood now has parents info
+    print('Orphan?')
+    match player_char.bg_birth:
+
+
+        case Birth.ORPHAN:
+            print('Yes, orphan.')
+            # print(f'player_char.bg_birth is: {str(player_char.bg_birth)}')
+            pc_parent1 = None
+            pc_parent2=None
+            pc_childhood += 'You are an orphan.'
+
+            print(pc_childhood)
+            pc_parent1=None
+
+        case _:
+            print('No, not orphan.')
+            print('Inside _ case')
+            print(f'player_char.bg_birth is: {str(player_char.bg_birth)}')
+            # pc_parent1 = random.choice([None, pc_parent1])
+            pc_parent2 = random.choice([None, pc_parent2])
+            num_parents = bool(pc_parent1) + bool(pc_parent2)
+
+
+            pc_childhood += "You were {} {} parent{}.".format(
+                "adopted by" if Birth.ADOPTED else "born to",
+                num_parents,
+                "s" if num_parents > 1 else "")
+            if pc_parent1: print(f'pc_parent1 is {pc_parent1.gender} {pc_parent1.race} {pc_parent1.job}')
+            if pc_parent2: print(f'pc_parent2 is {pc_parent2.gender} {pc_parent2.race} {pc_parent2.job}')
+
+            for parent in pc_parent1, pc_parent2:
+                if parent:
+                    print(f'{parent} exists.')
+                    if player_char.bg_birth == Birth.ADOPTED:
+                        print('Player was adopted. Randomizing parents...')
+                        parent.race = Race.random()
+                        parent.gender = Gender.random()
+
+                    pc_childhood += "Your {} is a {} {}. ".format(
+                        "mother" if parent.gender == Gender.FEMALE else "father",
+                        parent.race, parent.job)
+
+            print(pc_childhood)
+
+    finished_childhood = [pc_childhood]
+    for parent in pc_parent1, pc_parent2:
+        if parent:
+            finished_childhood.append(parent)
+    
+    return finished_childhood
+
 
 def reroll_childhood(childhood):
     print(childhood)
+    generate_parents(pc_childhood)
 
 def randomizer_reroll(question_text):
     choice_menu = {
@@ -150,16 +178,15 @@ def randomizer_question(question_text):
     return result
 
 
-
-print(f'pc_childhood is {pc_childhood}')
-reroll_childhood(pc_childhood)
-print('Rerolling...')
-print(f'pc_childhood is now {pc_childhood}')
-
-
-randomizer_question(pc_childhood)
+# print(f'pc_childhood is {pc_childhood}')
+# reroll_childhood(pc_childhood)
+# print('Rerolling...')
+# print(f'pc_childhood is now {pc_childhood}')
 
 
+finished_childhood = randomizer_question(pc_childhood)
+
+print(finished_childhood)
 # pc_growup = pc_childhood.append(Childhood.growup)
 # print(pc_growup)
   
