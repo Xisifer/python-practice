@@ -75,8 +75,8 @@ player_char.race = creator_question('Select race: ', Race)
 # ===================================================
 # Parents and Family
 # pc_childhood starts empty
-pc_childhood = ''
-def generate_parents(pc_childhood):
+
+def generate_parents():
     print('Generating parents...')
     # Both parents, single parent, orphan?
     # By default, every character has a birth mother
@@ -119,15 +119,12 @@ def generate_parents(pc_childhood):
 
             for parent in pc_parent1, pc_parent2:
                 if parent:
-                    if player_char.bg_birth == Birth.ADOPTED:
-
-                        parent.race = Race.random()
-                        parent.gender = Gender.random()
+                    parent.race = Race.random()
+                    parent.gender = Gender.random()
 
 
             pc_childhood += "You were {} {} parent{}.".format(
-                "adopted by" if Birth.ADOPTED else "born to",
-                num_parents,
+                "adopted by", num_parents,
                 "s" if num_parents > 1 else "")
         case _:
             print ('This should never happen.')
@@ -143,6 +140,7 @@ def generate_parents(pc_childhood):
             
             
     finished_childhood = [pc_childhood]
+    finished_childhood = Childhood()
     for parent in pc_parent1, pc_parent2:
         if parent:
             finished_childhood.append(parent)
@@ -150,14 +148,16 @@ def generate_parents(pc_childhood):
     # if pc_parent2: print(f'pc_parent2 is {pc_parent2.gender} {pc_parent2.race} {pc_parent2.job}')
     # print(f'At the end of generate_parents, player_char.bg_birth is {player_char.bg_birth}')
     # # print('Ending generate_parents')
-    # print(f'returning finished_childhood as {finished_childhood}')
+    print(f'returning finished_childhood as {finished_childhood}')
+
+
+
     return finished_childhood
 
 
 def reroll_childhood(childhood):
     # if childhood: print(f'Inside reroll_childhood, imported childhood is {childhood}')
-    pc_childhood = generate_parents(None)
-    rerolled_childhood = generate_parents(pc_childhood)
+    rerolled_childhood = generate_parents()
     # print(f'Inside reroll_childhood, generate_parents has exported {rerolled_childhood}.')
     return rerolled_childhood
 

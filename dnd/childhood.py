@@ -7,3 +7,4 @@ class Birth(WeightedEnum):
 
 class Childhood(WeightedEnum):
     growup = ['']
+
