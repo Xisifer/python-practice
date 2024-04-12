@@ -74,9 +74,12 @@ player_char.race = creator_question('Select race: ', Race)
 
 # ===================================================
 # Parents and Family
-# pc_childhood starts empty
+
 
 def generate_parents():
+
+    # pc_childhood starts empty
+    pc_childhood = ''
     print('Generating parents...')
     # Both parents, single parent, orphan?
     # By default, every character has a birth mother
@@ -140,7 +143,7 @@ def generate_parents():
             
             
     finished_childhood = [pc_childhood]
-    finished_childhood = Childhood()
+    # finished_childhood = Childhood()
     for parent in pc_parent1, pc_parent2:
         if parent:
             finished_childhood.append(parent)
@@ -180,15 +183,15 @@ def randomizer_question(question_text):
     # does_player_reroll = randomizer_reroll(question_text)
     does_player_reroll = True
     while does_player_reroll == True:
-        result = generate_parents(question_text)
+        result = generate_parents()
         does_player_reroll = randomizer_reroll(question_text)
     return result
 
 
-if pc_childhood: print(f'pc_childhood is {pc_childhood}')
+# if pc_childhood: print(f'pc_childhood is {pc_childhood}')
 
 
-finished_childhood = randomizer_question(pc_childhood)
+finished_childhood = randomizer_question('Your childhood growing up:')
 
 # print(f'finished_childhood is {finished_childhood[0]}')
 print(f'player_char.bg_birth is {player_char.bg_birth}')
