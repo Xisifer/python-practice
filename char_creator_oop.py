@@ -98,25 +98,26 @@ def generate_parents():
     player_char.bg_birth = Birth.random()
     # print(f'First generated: player_char.bg_birth is: {str(player_char.bg_birth)}')
     # pc_childhood now has parents info
+    
     match player_char.bg_birth:
 
 
         case Birth.ORPHAN:
             pc_childhood += 'You are an orphan.'
-            print(pc_childhood)
             pc_parent2=None
             pc_parent1=None
         case Birth.BORN:
-            pc_childhood += "You were {} {} parent{}.".format(
-                "born to",
-                num_parents,
-                "s" if num_parents > 1 else "")
-
-            print(pc_childhood)
+            s = "s" if num_parents > 1 else ""
+            pc_childhood += f"As a {player_char.race}, you were born to {num_parents} {player_char.race} parent{s}.\n"
+            for parent in pc_parent1, pc_parent2:
+                if parent:
+                    if parent.gender == Gender.FEMALE: 
+                        pc_childhood += "Your mother is a {}.\n".format(parent.job)
+                    elif parent.gender == Gender.MALE: 
+                        pc_childhood += "Your father is a {}.\n".format(parent.job)
+                    else:
+                        pc_childhood += "Your non-binary parent is a {}.\n".format(parent.job)
         case Birth.ADOPTED:
-            print('Inside ADOPTED case')
-            # print(f'player_char.bg_birth is: {str(player_char.bg_birth)}')
-
             pc_parent2 = random.choice([None, pc_parent2])
             num_parents = bool(pc_parent1) + bool(pc_parent2)
 
@@ -125,37 +126,35 @@ def generate_parents():
                     parent.race = Race.random()
                     parent.gender = Gender.random()
 
-
-            pc_childhood += "You were {} {} parent{}.".format(
-                "adopted by", num_parents,
-                "s" if num_parents > 1 else "")
+            s = "s" if num_parents > 1 else ""
+            pc_childhood += "You are a {}, but you were adopted by {} parent{}.\n".format(player_char.race, num_parents, s)
+            for parent in pc_parent1, pc_parent2:
+                if parent:
+                    if parent.gender == Gender.FEMALE: 
+                        pc_childhood += "Your mother is a {} {}.\n".format(parent.race,parent.job)
+                    elif parent.gender == Gender.MALE: 
+                        pc_childhood += "Your father is a {} {}.\n".format(parent.race,parent.job)
+                    else:
+                        pc_childhood += "Your parent is a non-binary {} {}.\n".format(parent.race,parent.job)
         case _:
             print ('This should never happen.')
 
-    print('Do you have parents?')
-    if pc_parent1: print('Yes')
-    if pc_parent2: print('Yes')  
+    
+
+            
+    parents = []
     for parent in pc_parent1, pc_parent2:
         if parent:
-            pc_childhood += "Your {} is a {} {}. ".format(
-                "mother" if parent.gender == Gender.FEMALE else "father",
-                parent.race, parent.job)
-            
-            
-    finished_childhood = [pc_childhood]
-    # finished_childhood = Childhood()
-    for parent in pc_parent1, pc_parent2:
-        if parent:
-            finished_childhood.append(parent)
-    # if pc_parent1: print(f'pc_parent1 is {pc_parent1.gender} {pc_parent1.race} {pc_parent1.job}')
-    # if pc_parent2: print(f'pc_parent2 is {pc_parent2.gender} {pc_parent2.race} {pc_parent2.job}')
-    # print(f'At the end of generate_parents, player_char.bg_birth is {player_char.bg_birth}')
-    # # print('Ending generate_parents')
-    print(f'returning finished_childhood as {finished_childhood}')
+            parents.append(parent)
 
 
+    finished_childhood = pc_childhood
 
-    return finished_childhood
+    print(finished_childhood)
+    # print(f'parents are {parents}')
+
+
+    return finished_childhood, parents
 
 
 def reroll_childhood(childhood):
@@ -183,8 +182,10 @@ def randomizer_question(question_text):
     # does_player_reroll = randomizer_reroll(question_text)
     does_player_reroll = True
     while does_player_reroll == True:
+        # result, prompt_text = generate_parents()
+        # print(prompt_text)
         result = generate_parents()
-        does_player_reroll = randomizer_reroll(question_text)
+        does_player_reroll = randomizer_reroll("Accept or Reroll?")
     return result
 
 
@@ -193,8 +194,18 @@ def randomizer_question(question_text):
 
 finished_childhood = randomizer_question('Your childhood growing up:')
 
-# print(f'finished_childhood is {finished_childhood[0]}')
-print(f'player_char.bg_birth is {player_char.bg_birth}')
+player_char.bg_childhood = finished_childhood[0]
+if player_char.parent1: player_char.parent1 = finished_childhood[1]
+if player_char.parent2: player_char.parent2 = finished_childhood[2]
+
+print('Player background accepted and saved.')
+print(player_char.bg_childhood)
+print(player_char.parent1)
+print('Player is a {}'.format(player_char.race))
+
+# print('Player parent 1: {}'.format(pc_parent1.gender, pc_parent1))
+
+
 # pc_growup = pc_childhood.append(Childhood.growup)
 # print(pc_growup)
   
