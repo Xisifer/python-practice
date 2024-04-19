@@ -151,8 +151,9 @@ def generate_parents():
     finished_childhood = pc_childhood
 
     print(finished_childhood)
-    # print(f'parents are {parents}')
-
+    print(f'in generate_parents parents are {parents}')
+    # if pc_parent1: pc_parent1 = player_char.parent1
+    # if pc_parent2: pc_parent1 = player_char.parent2
 
     return finished_childhood, parents
 
@@ -184,23 +185,26 @@ def randomizer_question(question_text):
     while does_player_reroll == True:
         # result, prompt_text = generate_parents()
         # print(prompt_text)
-        result = generate_parents()
+        result, parents = generate_parents()
         does_player_reroll = randomizer_reroll("Accept or Reroll?")
-    return result
+    return result, parents
 
 
 # if pc_childhood: print(f'pc_childhood is {pc_childhood}')
 
 
-finished_childhood = randomizer_question('Your childhood growing up:')
+finished_childhood, parents = randomizer_question('Your childhood growing up:')
 
-player_char.bg_childhood = finished_childhood[0]
-if player_char.parent1: player_char.parent1 = finished_childhood[1]
-if player_char.parent2: player_char.parent2 = finished_childhood[2]
+player_char.bg_childhood = finished_childhood
+# if player_char.parent1: print(player_char.parent1)
 
 print('Player background accepted and saved.')
 print(player_char.bg_childhood)
-print(player_char.parent1)
+print('Parents are {}'.format(parents))
+print('parents[0] is {}'.format(parents[0]))
+print('parents[1] is {}'.format(parents[1]))
+
+# print(player_char.parent1)
 print('Player is a {}'.format(player_char.race))
 
 # print('Player parent 1: {}'.format(pc_parent1.gender, pc_parent1))
