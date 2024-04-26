@@ -3,7 +3,7 @@ from dnd.race import Race
 
 # Define the Parent class with a race property
 class Parent(Character):
-    def __init__(self, gender=None, race=None, job=None):
+    def __init__(self, gender=None, race=None, job=None, **kwargs):
         super().__init__()
         self.gender = gender
         self.race = race

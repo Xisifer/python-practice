@@ -77,11 +77,9 @@ player_char.race = creator_question('Select race: ', Race)
 
 
 def generate_parents():
-
     # pc_childhood starts empty
     pc_childhood = ''
     print('Generating parents...')
-    # Both parents, single parent, orphan?
     # By default, every character has a birth mother
     pc_parent1 = Parent()
     pc_parent1.gender = Gender.FEMALE
@@ -96,12 +94,8 @@ def generate_parents():
     num_parents = 2
 
     player_char.bg_birth = Birth.random()
-    # print(f'First generated: player_char.bg_birth is: {str(player_char.bg_birth)}')
-    # pc_childhood now has parents info
     
     match player_char.bg_birth:
-
-
         case Birth.ORPHAN:
             pc_childhood += 'You are an orphan.'
             pc_parent2=None
@@ -138,30 +132,18 @@ def generate_parents():
                         pc_childhood += "Your parent is a non-binary {} {}.\n".format(parent.race,parent.job)
         case _:
             print ('This should never happen.')
-
-    
-
-            
+  
     parents = []
     for parent in pc_parent1, pc_parent2:
         if parent:
             parents.append(parent)
-
-
     finished_childhood = pc_childhood
-
     print(finished_childhood)
-    print(f'in generate_parents parents are {parents}')
-    # if pc_parent1: pc_parent1 = player_char.parent1
-    # if pc_parent2: pc_parent1 = player_char.parent2
-
     return finished_childhood, parents
 
 
 def reroll_childhood(childhood):
-    # if childhood: print(f'Inside reroll_childhood, imported childhood is {childhood}')
     rerolled_childhood = generate_parents()
-    # print(f'Inside reroll_childhood, generate_parents has exported {rerolled_childhood}.')
     return rerolled_childhood
 
 def randomizer_reroll(question_text):
@@ -179,12 +161,8 @@ def randomizer_reroll(question_text):
         return False
 
 def randomizer_question(question_text):
-    # result = reroll_childhood(question_text)
-    # does_player_reroll = randomizer_reroll(question_text)
     does_player_reroll = True
     while does_player_reroll == True:
-        # result, prompt_text = generate_parents()
-        # print(prompt_text)
         result, parents = generate_parents()
         does_player_reroll = randomizer_reroll("Accept or Reroll?")
     return result, parents
@@ -196,18 +174,33 @@ def randomizer_question(question_text):
 finished_childhood, parents = randomizer_question('Your childhood growing up:')
 
 player_char.bg_childhood = finished_childhood
-# if player_char.parent1: print(player_char.parent1)
-
 print('Player background accepted and saved.')
-print(player_char.bg_childhood)
-print('Parents are {}'.format(parents))
-print('parents[0] is {}'.format(parents[0]))
-print('parents[1] is {}'.format(parents[1]))
 
-# print(player_char.parent1)
-print('Player is a {}'.format(player_char.race))
+print('Saving parents data...')
+# print(len(parents))
+# # if parents[0] in parents: 
+#     pc_parent1 = Parent(parents[0].gender, parents[0].race, parents[0].job)
+#     print('Saved {}, a {} {} {}.'.format('pc_parent1', pc_parent1.gender, pc_parent1.race, pc_parent1.job))
+# if parents[1] in parents: 
+#     pc_parent2 = Parent(parents[1].gender, parents[1].race, parents[1].job)
+#     print('Saved {}, a {} {} {}.'.format('pc_parent2', pc_parent2.gender, pc_parent2.race, pc_parent2.job))
 
-# print('Player parent 1: {}'.format(pc_parent1.gender, pc_parent1))
+print(f'len(parents) is {len(parents)}')
+if len(parents) == 0:
+    print('Orphan!')
+elif len(parents) >= 1:
+    pc_parent1 = Parent(parents[0].gender, parents[0].race, parents[0].job)
+    print('Saved {}, a {} {} {}.'.format('pc_parent1', pc_parent1.gender, pc_parent1.race, pc_parent1.job))
+elif len(parents) >= 2:
+    pc_parent2 = Parent(parents[1].gender, parents[1].race, parents[1].job)
+    print('Saved {}, a {} {} {}.'.format('pc_parent2', pc_parent2.gender, pc_parent2.race, pc_parent2.job))
+
+# for i in len(parents):
+#     pc_parent = Parent(parents[i].gender, parents[i].race, parents[i].job)
+#     print('Saved {}, a {} {} {}.'.format('pc_parent1', pc_parent1.gender, pc_parent1.race, pc_parent1.job))
+
+
+# print(player_char.bg_childhood)
 
 
 # pc_growup = pc_childhood.append(Childhood.growup)
