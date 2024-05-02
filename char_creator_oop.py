@@ -168,12 +168,9 @@ def randomizer_question(question_text):
     return result, parents
 
 
-# if pc_childhood: print(f'pc_childhood is {pc_childhood}')
-
-
 finished_childhood, parents = randomizer_question('Your childhood growing up:')
 
-player_char.bg_childhood = finished_childhood
+player_char.bg_birth = finished_childhood
 print('Player background accepted and saved.')
 
 print('Saving parents data...')
@@ -185,30 +182,23 @@ print('Saving parents data...')
 #     pc_parent2 = Parent(parents[1].gender, parents[1].race, parents[1].job)
 #     print('Saved {}, a {} {} {}.'.format('pc_parent2', pc_parent2.gender, pc_parent2.race, pc_parent2.job))
 
-print(f'len(parents) is {len(parents)}')
+# print(f'len(parents) is {len(parents)}')
 if len(parents) == 0:
     print('Orphan!')
-elif len(parents) >= 1:
+elif len(parents) == 1:
     pc_parent1 = Parent(parents[0].gender, parents[0].race, parents[0].job)
     print('Saved {}, a {} {} {}.'.format('pc_parent1', pc_parent1.gender, pc_parent1.race, pc_parent1.job))
-elif len(parents) >= 2:
+elif len(parents) == 2:
+    pc_parent1 = Parent(parents[0].gender, parents[0].race, parents[0].job)
+    print('Saved {}, a {} {} {}.'.format('pc_parent1', pc_parent1.gender, pc_parent1.race, pc_parent1.job))
     pc_parent2 = Parent(parents[1].gender, parents[1].race, parents[1].job)
     print('Saved {}, a {} {} {}.'.format('pc_parent2', pc_parent2.gender, pc_parent2.race, pc_parent2.job))
 
-# for i in len(parents):
-#     pc_parent = Parent(parents[i].gender, parents[i].race, parents[i].job)
-#     print('Saved {}, a {} {} {}.'.format('pc_parent1', pc_parent1.gender, pc_parent1.race, pc_parent1.job))
 
 
-# print(player_char.bg_childhood)
-
-
-# pc_growup = pc_childhood.append(Childhood.growup)
 # print(pc_growup)
   
 # player_char.childhood = ask_reroll(pc_childhood, Childhood)
-
-
 
 # player_char.parents = creator_question('Status of your parents: ', ParentsStatus)
 
@@ -218,3 +208,21 @@ elif len(parents) >= 2:
 #         pass
 #     case ParentsStatus.INCIDENT:
 #         print('Something happened to your parents.')
+
+
+player_char.bg_childhood = creator_question('As a child, ', Childhood)
+print('When you were growing up...')
+print('')
+
+player_char.childhood = 
+
+player_char.job = creator_question('Your class: ', PlayerJob)
+
+
+# You were born in the month of [sign] (Aspects: A, B, C. Game effects: A, B, C) to be a [gender] [race]. You have [color] hair, [color] eyes and a [color] complexion.
+# Your parents belonged to the lower class. They were honest hard-working people, who did everything to enable you to live a comfortable and fine life. They were not very succesful.
+# As a child you had to survive pretty harsh times since your parents seemed to have run out of luck. Their wealth was ever-declining and times were very hard.
+# During your youth you had lots of fun playing with other kids of your age. You always wer a natural leader and the enter of interest.
+# As a young adult, you tried many occupations before finally deciding on one to pursur. This has left you with a vrey broad base of lore.
+# At the age of [num] you end your apprenticeship. You are now a fully learned [class].
+
