@@ -12,6 +12,7 @@ from dnd.parents_status import ParentsStatus
 from dnd.parent_class import Parent
 from dnd.jobs_menu import PlayerJob, NPCJob, AllyJob
 from dnd.gender import Gender
+from dnd.appearance import HairColor, EyeColor, SkinColor, ScalesColor
 
 def name_input():
     char_name = input("Character name: ")
@@ -45,32 +46,28 @@ def creator_question(question_text, attribute):
 
 player_char = Character()
 
-# player_char.name = name_input()
-
-player_char.race = creator_question('Select race: ', Race)
-
-# player_char.bg_childhood = creator_question('Your origin: ', Childhood)
-
-# match player_char.race:
-#     case Race.HUMAN:
-#         player_char.bg_homeland = creator_question('You hail from ', HumanHomes)
-#         player_char.bg_origin = creator_question('You were raised in ', HumanOrigins)
-#         player_char.bg_flavor = creator_question('As you were growing up, ', HumanFlavor)
 
 
-#     case Race.ELF | Race.HALFLING | Race.GNOME:
-#         player_char.bg_homeland = creator_question('You hail from ', FeyHomes)
-#         player_char.bg_origin = creator_question('You were raised in ', FeyOrigins)
-#         player_char.bg_flavor = creator_question('As you were growing up, ', FeyFlavor)
+def generate_appearance():
+
+    pc_appearance = []
     
-#     case Race.DRAGONBORN | Race.ORC | Race.GOBLIN | Race.KOBOLD | Race.GNOLL:
-#         player_char.bg_homeland = creator_question('You hail from ', SavageHomes)
-#         player_char.bg_origin = creator_question('You were raised in ', SavageOrigins)
-#         player_char.bg_flavor = creator_question('As you were growing up, ', SavageFlavor)
+    match player_char.race:
+        case Race.HUMAN:
+            pc_appearance_eyes = EyeColor.random()
+            pc_appearance_hair = HairColor.random()
+            pc_appearance_skin = SkinColor.random()
 
-#     case _:
-#         print('ERROR')
+        case Race.ELF | Race.HALFLING | Race.GNOME:
+            pc_appearance_eyes = EyeColor.random()
+        
+        case Race.DRAGONBORN | Race.ORC | Race.GOBLIN | Race.KOBOLD | Race.GNOLL:
+            pc_appearance_eyes = EyeColor.random()
 
+        case _:
+            print('ERROR')
+
+    return pc_appearance
 
 # ===================================================
 # Parents and Family
@@ -168,6 +165,33 @@ def randomizer_question(question_text):
     return result, parents
 
 
+# player_char.name = name_input()
+
+player_char.race = creator_question('Select race: ', Race)
+
+# player_char.bg_childhood = creator_question('Your origin: ', Childhood)
+
+# match player_char.race:
+#     case Race.HUMAN:
+#         player_char.bg_homeland = creator_question('You hail from ', HumanHomes)
+#         player_char.bg_origin = creator_question('You were raised in ', HumanOrigins)
+#         player_char.bg_flavor = creator_question('As you were growing up, ', HumanFlavor)
+
+
+#     case Race.ELF | Race.HALFLING | Race.GNOME:
+#         player_char.bg_homeland = creator_question('You hail from ', FeyHomes)
+#         player_char.bg_origin = creator_question('You were raised in ', FeyOrigins)
+#         player_char.bg_flavor = creator_question('As you were growing up, ', FeyFlavor)
+    
+#     case Race.DRAGONBORN | Race.ORC | Race.GOBLIN | Race.KOBOLD | Race.GNOLL:
+#         player_char.bg_homeland = creator_question('You hail from ', SavageHomes)
+#         player_char.bg_origin = creator_question('You were raised in ', SavageOrigins)
+#         player_char.bg_flavor = creator_question('As you were growing up, ', SavageFlavor)
+
+#     case _:
+#         print('ERROR')
+
+
 finished_childhood, parents = randomizer_question('Your childhood growing up:')
 
 player_char.bg_birth = finished_childhood
@@ -214,7 +238,7 @@ player_char.bg_childhood = creator_question('As a child, ', Childhood)
 print('When you were growing up...')
 print('')
 
-player_char.childhood = 
+player_char.childhood = ""
 
 player_char.job = creator_question('Your class: ', PlayerJob)
 

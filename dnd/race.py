@@ -11,6 +11,3 @@ class Race(WeightedEnum):
     GOBLIN = ("Goblin", 10)
     KOBOLD = ("Kobold", 10)
     GNOLL = ("Gnoll", 5)
-
-
-    
