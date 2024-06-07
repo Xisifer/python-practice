@@ -8,10 +8,13 @@ from dnd.childhood import Birth
 
 # Define the Parent class with a race property
 class Parent(Character):
+
     def __init__(self, gender=None, race=None, job=None, kin=None, **kwargs):
         super().__init__()
         self.gender = gender
 
+
+    def generate(self):
         # pc_childhood starts empty
         pc_childhood = ''
         print('Generating parents...')
@@ -27,12 +30,12 @@ class Parent(Character):
 
 
         # Second parent defaults to Father, but this can change
-        pc_parent2 = Parent()
-        pc_parent2.gender = Gender.MALE
-        pc_parent2.race = player_char.race
-        pc_parent2.job = NPCJob.random()
+        # pc_parent2 = Parent()
+        # pc_parent2.gender = Gender.MALE
+        # pc_parent2.race = player_char.race
+        # pc_parent2.job = NPCJob.random()
 
-        num_parents = 2
+        # num_parents = 2
 
         player_char.bg_birth = Birth.random()
         

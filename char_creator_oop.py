@@ -66,7 +66,7 @@ def generate_appearance():
 
         case _:
             print('ERROR')
-
+    print(pc_appearance)
     return pc_appearance
 
 # ===================================================
